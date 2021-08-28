@@ -27,12 +27,11 @@
        //increment by 1 to the total and the answered correctly property
      case types.ANSWERED_CORRECTLY: 
       const newAnsweredCardList  = JSON.parse(JSON.stringify(state.answeredCardList))
-      const newflashCardList =JSON.parse(JSON.stringify(state.flashCardList)) 
-      newAnsweredCardList.push(newflashCardList.slice(1,0))
-      newflashCardList.shift()
+      const newflashCardList = JSON.parse(JSON.stringify(state.flashCardList)) 
+      // remove first index from flashCardList push it to the answeredCardList to record it  
+      newAnsweredCardList.push(newflashCardList.shift())
       const newTotalCardsAnswered = state.totalCardsAnswered
       const newAnsweredRight = state.answeredRight
-
        return {...state,
        totalCardsAnswered: newTotalCardsAnswered + 1,
        answeredRight: newAnsweredRight + 1,
@@ -44,11 +43,11 @@
      case types.ANSWERED_INCORRECTLY:
       const newAnsweredCardList  = JSON.parse(JSON.stringify(state.answeredCardList))
       const newflashCardList = JSON.parse(JSON.stringify(state.flashCardList))  
-      newAnsweredCardList.push(newflashCardList.slice(1,0))
-      newflashCardList.shift()
+      // remove first index from flashCardList push it to the answeredCardList to record it  
+      newAnsweredCardList.push(newflashCardList.shift())
+
       const newTotalCardsAnswered = state.totalCardsAnswered
       const newAnsweredWrong = state.answeredWrong
-
        return {...state,
         totalCardsAnswered: newTotalCardsAnswered + 1,
         answeredWrong: newAnsweredWrong + 1,
@@ -63,7 +62,7 @@
         newCreatedUserCards.push(action.payload)
        return {
          ...state,
-         newCreatedUserCards
+         createdUserCards: newCreatedUserCards
        };
      
       //add flashcards queried from the data base
@@ -76,10 +75,10 @@
       //add a topic to the chose topics array
      case types.ADD_TO_TOPICS_LIST:
        let newChosenTopics = JSON.parse(JSON.stringify(state.chosenTopics))
-       if(action.payload === all){
+       if(action.payload === 'all'){
          newChosenTopics = []
        }else{
-          newChosenTopics.push(action.paylod)
+         newChosenTopics.push(action.payload)
        }
        return {...state,
         chosenTopics: newChosenTopics

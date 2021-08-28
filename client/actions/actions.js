@@ -12,8 +12,9 @@
  import axios from 'axios';
  import * as types from '../constants/actionTypes';
  //increment total and answered corectly client side also make post request server side to make changes
- export const ANSWERED_CORRECTLY = (userID, flashCardID) => (dispatch) => {
-   axios.post('/cards/answeredCorrectTotal', {userId: userID, flashCardID: flashCardID})
+ export const ANSWERED_CORRECTLY = (flashCardID) => (dispatch, getState) => {
+    const userID = getState().flashCodes.userID;
+   axios.post('/cards/answeredCorrect', {userID: userID, flashCardID: flashCardID})
       .then(({status}) =>{
         if(status === 200){
           dispatch({
@@ -25,8 +26,9 @@
       .catch(console.error)
  };
   //increment total and answered incorectly client side also make post request server side to make changes
- export const ANSWERED_INCORRECTLY = (userID, flashCardID) => (dispatch) => {
-  axios.post('/cards/answeredInCorrectTotal', {userId: userID, flashCardID: flashCardID})
+ export const ANSWERED_INCORRECTLY = (flashCardID) => (dispatch,getState) => {
+  const userID = getState().flashCodes.userID;
+  axios.post('/cards/answeredIncorrect', {userID: userID, flashCardID: flashCardID})
      .then(({status}) =>{
        if(status === 200){
          dispatch({
@@ -39,8 +41,9 @@
 };
  
 // send post request server side to create card use return from post to change state client side 
- export const ADD_CREATED_USER_CARD = (userId, question, answer) => (dispatch) => {
-  axios.post('/cards/createCard', {userId: userId, question: question, answer: answer})
+ export const ADD_CREATED_USER_CARD = (question, answer) => (dispatch,getState ) => {
+  const userID = getState().flashCodes.userID;
+  axios.post('/cards/createCard', {userID: userID, question: question, answer: answer})
      .then((info) =>{
        if(info.status === 200){
          dispatch({
@@ -53,12 +56,11 @@
  };
  
  // get request to retrieve flashcards with an array to retrieve categories 
- export const ADD_FLASH_CARD_LIST = event => (dispatch, getState) => {
-   event.preventDefault();
+ export const ADD_FLASH_CARD_LIST = (dispatch, getState) => {
    //in the future will also code to include a users ID to get their information as well
    const chosenTopics = getState().flashCodes.chosenTopics;
    //query parameters.... or req.body
-   axios.get('/cards/getCards', chosenTopics)
+   axios.get('/cards/category/', {categories:chosenTopics})
      .then((info) => {
        if (info.status === 200){
         dispatch({ 
