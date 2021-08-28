@@ -9,10 +9,11 @@
  * ************************************
  */
 
- export const ADD_CARD = 'ADD_CARD';
- export const DELETE_CARD = 'DELETE_CARD';
- export const ADD_MARKET = 'ADD_MARKET';
- export const UPDATE_LOCATION = 'UPDATE_LOCATION';
- export const SYNC_MARKETS = 'SYNC_MARKETS';
- export const LOAD_MARKETS = 'LOAD_MARKETS';
- 
+ export const ANSWERED_CORRECTLY = 'ANSWERED_CORRECTLY';
+ export const ANSWERED_INCORRECTLY = 'ANSWERED_INCORRECTLY';
+ export const ADD_CREATED_USER_CARD = 'ADD_CREATED_USER_CARD';
+ export const ADD_FLASH_CARD_LIST = 'ADD_FLASH_CARD_LIST ';
+ export const GET_TOPICS_LIST = 'ADD_FLASH_CARD_LIST ';
+ export const ADD_TO_TOPICS_LIST = 'ADD_FLASH_CARD_LIST ';
+ export const REMOVE_ONE_TOPICS_LIST = 'REMOVE_ONE_TOPICS_LIST ';
+

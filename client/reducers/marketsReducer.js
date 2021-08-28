@@ -1,7 +1,7 @@
 /**
  * ************************************
  *
- * @module  marketsReducer
+ * @module  flashCodesReducer
  * @author
  * @date
  * @description reducer for market data
@@ -12,88 +12,77 @@
  import * as types from '../constants/actionTypes';
 
  const initialState = {
-   totalMarkets: 0,
-   totalCards: 0,
-   marketList: [],
-   newLocation: '',
-   synced: true,
+   userID: null,
+   totalCardsAnswered: 0,
+   answeredRight: 0,
+   answeredWrong: 0,
+   answeredCardList:[],
+   flashCardList:[],
+   createdUserCards:[],
+   chosenTopics:[]
  };
  
- const marketsReducer = (state = initialState, action) => {
+ const flashCodesReducer = (state = initialState, action) => {
    switch (action.type) {
-     case types.ADD_MARKET:
-       return {
-         ...state,
-         marketList: state.marketList.concat({
-           location: action.payload,
-           cards: 0,
-         }),
-         totalMarkets: state.totalMarkets + 1,
-         newLocation: '',
-         synced: false,
+     case types.ANSWERED_CORRECTLY: 
+      const newAnsweredCardList  = [...state.answeredCardList]
+      const newflashCardList =state.flashCardList 
+      newAnsweredCardList.push(newflashCardList.slice(1,0))
+      newflashCardList.shift()
+
+       return {...state,
+       totalCardsAnswered: state.totalCardsAnswered + 1,
+       answeredWrong: state.answeredWrong + 1,
+       AnsweredCardList:newAnsweredCardList,
+       flashCardList: newflashCardList
        };
  
-     case types.UPDATE_LOCATION:
-       return {
-         ...state,
-         newLocation: action.payload,
+     case types.ANSWERED_INCORRECTLY:
+      const newAnsweredCardList  = [...state.answeredCardList]
+      const newflashCardList =state.flashCardList 
+      newAnsweredCardList.push(newflashCardList.slice(1,0))
+      newflashCardList.shift()
+
+       return {...state,
+        totalCardsAnswered: state.totalCardsAnswered + 1,
+        totalCardsAnsweredCorrectly: state.answeredWrong + 1,
+        AnsweredCardList:newAnsweredCardList,
+        flashCardList: newflashCardList
+
        };
  
-     case types.ADD_CARD: {
-       const newMarketList = state.marketList.map((market, idx) => {
-         if (idx === action.payload) {
-           return {
-             ...market,
-             cards: market.cards + 1,
-           };
-         }
-         return market;
-       });
- 
+     case types.ADD_CREATED_USER_CARD: 
        return {
-         ...state,
-         totalCards: state.totalCards + 1,
-         marketList: newMarketList,
-         synced: false,
        };
-     }
+     
  
-     case types.DELETE_CARD: {
-       const newMarketList = state.marketList.map((market, idx) => {
-         if (idx === action.payload) {
-           return {
-             ...market,
-             cards: market.cards - 1,
-           };
-         }
-         return market;
-       });
- 
+     case types.ADD_FLASH_CARD_LIST: 
        return {
-         ...state,
-         totalCards: state.totalCards - 1,
-         marketList: newMarketList,
+
        };
-     }
+     
  
-     case types.SYNC_MARKETS:
+     case types.GET_TOPICS_LIST:
+        return{
+          
+        };
+    
+ 
+     case types.ADD_TO_TOPICS_LIST:
        return {
-         ...state,
-         synced: true,
+
        };
- 
-     case types.LOAD_MARKETS:
+
+     case types.REMOVE_ONE_TOPICS_LIST:
        return {
-         ...state,
-         totalMarkets: action.payload.length,
-         totalCards: action.payload.reduce((res, m) => res + m.cards, 0),
-         marketList: action.payload,
+
        };
  
      default:
-       return state;
+       return state; 
+      }
    }
  };
  
- export default marketsReducer;
+ export default flashCodesReducer;
  

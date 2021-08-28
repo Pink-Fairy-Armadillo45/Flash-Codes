@@ -13,7 +13,7 @@
  import * as types from '../constants/actionTypes';
  
  export const updateLocation = data => ({
-   type: types.UPDATE_LOCATION,
+   type: types.ANSWERED_CORRECTLY,
    payload: data,
  });
  
