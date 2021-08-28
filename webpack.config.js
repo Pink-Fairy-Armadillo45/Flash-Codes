@@ -32,7 +32,7 @@ module.exports = (env) => {
     devServer: {
       hot: true,
       proxy: {
-        '/api/**': {
+        '/cards/**': {
           target: 'http://localhost:3000',
           secure: false,
         },
