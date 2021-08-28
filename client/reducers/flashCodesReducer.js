@@ -19,7 +19,8 @@
    answeredCardList:[],
    flashCardList:[],
    createdUserCards:[],
-   chosenTopics:[]
+   chosenTopics:[],
+   answerShown :false
  };
  
  const flashCodesReducer = (state = initialState, action) => {
@@ -32,11 +33,13 @@
       newAnsweredCardList.push(newflashCardList.shift())
       const newTotalCardsAnswered = state.totalCardsAnswered
       const newAnsweredRight = state.answeredRight
+      const newAnswerShown = false
        return {...state,
        totalCardsAnswered: newTotalCardsAnswered + 1,
        answeredRight: newAnsweredRight + 1,
        answeredCardList: newAnsweredCardList,
-       flashCardList: newflashCardList
+       flashCardList: newflashCardList,
+       answerShown: newAnswerShown
        };
  
         //increment by 1 to the total and the answered incorrectly property
@@ -48,11 +51,13 @@
 
       const newTotalCardsAnswered = state.totalCardsAnswered
       const newAnsweredWrong = state.answeredWrong
+      const newAnswerShown = false
        return {...state,
         totalCardsAnswered: newTotalCardsAnswered + 1,
         answeredWrong: newAnsweredWrong + 1,
         AnsweredCardList:newAnsweredCardList,
-        flashCardList: newflashCardList
+        flashCardList: newflashCardList,
+        answerShown: newAnswerShown
 
        };
 
@@ -89,6 +94,12 @@
       newChosenTopics = newChosenTopics.filter((e) => e !== action.payload)
        return {...state,
         chosenTopics: newChosenTopics
+       };
+
+     case types.REVEAL_ANSWER:
+      const newAnswerShown = true
+       return {...state,
+        answerShown: newAnswerShown
        };
  
      default:
