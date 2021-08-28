@@ -10,9 +10,9 @@
  */
 
  import { combineReducers } from 'redux';
- import marketsReducer from './marketsReducer';
+ import flashCodesReducer from './flashCodesReducer';
  
  export default combineReducers({
-   markets: marketsReducer,
+   flashCodes: flashCodesReducer,
  });
  
