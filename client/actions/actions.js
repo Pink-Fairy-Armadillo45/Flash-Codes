@@ -83,3 +83,7 @@
    payload: topic,
  }) 
  
+ export const REVEAL_ANSWER = () => ({
+   type: types.REVEAL_ANSWER,
+ }) 
+ 
