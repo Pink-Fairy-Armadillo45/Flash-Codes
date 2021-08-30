@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {connect} from 'react-redux';
 import * as actions from '../actions/actions';
 
@@ -18,7 +18,8 @@ const CreateCard = props => {
 
  const sendNewcard = () =>{
     const topic = document.querySelector('#topics').value
-    props.submit(question, answer, topic) 
+    console.log('check topic', topic)
+    props.createUserCard(question, answer, topic) 
  }
 
 return(
@@ -30,12 +31,13 @@ return(
                 <option value="Unit 2">Unit 2</option>
                 <option value="Unit 3">Unit 3</option>
                 <option value="Unit 4">Unit 4</option>
+                <option value="GOOGLE IT">Unit 4</option>
             </select>
                 <div>
                     Question: <input type="text" id='Question' name='Question' value ={question} onChange={setQuestion} required />
                     Answer: <input type="text" id='Answer' name='Answer' value ={answer} onChange={setAnswer} required/>
                 </div>  
-                <input type='button' value='Submit' name='Submit UserCard' onClick={() => {sendNewcard()}} /> 
+                <input type='button' value='Submit a New Card' name='Submit UserCard' onClick={() => {sendNewcard()}} /> 
             </form>
         <div>
       

@@ -5,13 +5,13 @@ import { connect } from 'react-redux';
 import * as actions from '../actions/actions.js'
 
 const mapDispatchToProps = dispatch => ({
-    passCard: (flashCardID) => {
+    passCard: () => {
         console.log('this is passing')
-        dispatch(actions.ANSWERED_CORRECTLY(flashCardID))
+        dispatch(actions.ANSWERED_CORRECTLY())
     },
-    failCard: (flashCardID) => {
+    failCard: () => {
         console.log('this is failing')
-        dispatch(actions.ANSWERED_INCORRECTLY(flashCardID))
+        dispatch(actions.ANSWERED_INCORRECTLY())
     }
 })
 class ButtonContainer extends Component {

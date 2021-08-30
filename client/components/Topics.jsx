@@ -21,7 +21,7 @@ const Topics = props => (
             <input type='checkbox' id='Unit 1' name='Unit 1' onChange={(e) => {
                 if(e.target.checked) return props.selectTopic(e.target.id);
                 else return props.deselectTopic(e.target.id); 
-                }}/> Unit 1
+                }}/> Unit 1 
             <input type='checkbox' id='Unit 2' name='Unit 2' onChange={(e) => {
                 if(e.target.checked) return props.selectTopic(e.target.id);
                 else return props.deselectTopic(e.target.id); 
@@ -30,8 +30,16 @@ const Topics = props => (
                 if(e.target.checked) return props.selectTopic(e.target.id);
                 else return props.deselectTopic(e.target.id); 
                 }}/> Unit 3
+            <input type='checkbox' id='Unit 4' name='Unit 4' onChange={(e) => {
+                if(e.target.checked) return props.selectTopic(e.target.id);
+                else return props.deselectTopic(e.target.id); 
+                }}/> Unit 4
+            <input type='checkbox' id='Unit 4' name='Unit 4' onChange={(e) => {
+                if(e.target.checked) return props.selectTopic(e.target.id);
+                else return props.deselectTopic(e.target.id); 
+                }}/> GOOGLE IT
                 <div>
-                    <input type='button' value='Submit' name='Begin Review' onClick={() => props.submit() } /> 
+                    <input type='button' value='Begin Review' name='Begin Review' onClick={() => props.submit() } /> 
                 </div>
             </div>
         </div>

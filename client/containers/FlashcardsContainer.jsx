@@ -21,7 +21,9 @@ const mapsStateToProps = (state) => ({
   createdUserCards: state.flashCodes.createdUserCards,
   userID : state.flashCodes.userID,
   username : state.flashCodes.username,
-  createCard : state.flashCodes.createCard
+  createCard : state.flashCodes.createCard,
+  answeredRight: state.flashCodes.answeredRight,
+  answeredWrong: state.flashCodes.answeredWrong
 });
 
 
@@ -47,6 +49,9 @@ const mapDispatchToProps = (dispatch) => ({
   createACard: () => {
     dispatch(actions.CREATE_CARD());
   },
+  resetSession: () => {
+    dispatch(actions.RESET_SESSION());
+  },
 });
 
 
@@ -57,7 +62,7 @@ class FlashcardsContainer extends Component {
 
 
   displaySession(){
-    if(this.props.session === false){
+    if(this.props.session === false && this.props.userID !== null){
       return (
           <Topics 
           chosenTopics={this.props.chosenTopics} 
@@ -66,7 +71,12 @@ class FlashcardsContainer extends Component {
           submit={this.props.submit}
           />
       )
-    }else{
+    }else if(this.props.flashCardList.length === 0 && this.props.session === true){
+      alert(`You finished your review! You answered ${this.props.answeredRight} out of ${this.props.totalCardsAnswered} correctly. Would you like to review again?`)
+      this.props.selectTopic('all')
+      this.props.resetSession()
+
+    }else if(this.props.session === true && this.props.userID !== null){
       return(
               <div>Session in progress.</div>
       )
@@ -93,7 +103,7 @@ class FlashcardsContainer extends Component {
       if(this.props.createCard){
         //console.log(this.)
         return  (<CreateCard 
-        submit={this.props.submit}
+        createUserCard={this.props.createUserCard}
         />)
       }else{
        return (<button id='loginStuff' className="primary" type="submit" onClick={()=>{this.props.createACard()}}>Create a new Flashcard</button>) 

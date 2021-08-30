@@ -132,12 +132,12 @@
      }
    }
  
-  //  case types.Session: {
-  //    const newSession = true
-  //    return {...state,
-  //      session: newSession
-  //    }
-  //  }
+   case types.RESET_SESSION: {
+     const newSession = false
+     return {...state,
+       session: newSession
+     }
+   }
  
   
    default:

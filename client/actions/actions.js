@@ -12,8 +12,9 @@
 import axios from 'axios';
 import * as types from '../constants/actionTypes';
 //increment total and answered correctly client side also make post request server side to make changes
-export const ANSWERED_CORRECTLY = (flashCardID) => (dispatch, getState) => {
+export const ANSWERED_CORRECTLY = () => (dispatch, getState) => {
   const userID = getState().flashCodes.userID;
+  const flashCardID = getState().flashCodes.flashCardList[0]._id
   axios.post('/cards/answeredCorrect', {userID: userID, flashCardID: flashCardID})
     .then(({status}) =>{
       if(status === 200){
@@ -27,7 +28,7 @@ export const ANSWERED_CORRECTLY = (flashCardID) => (dispatch, getState) => {
 };
 
   //increment total and answered incorrectly client side also make post request server side to make changes
-export const ANSWERED_INCORRECTLY = (flashCardID) => (dispatch,getState) => {
+export const ANSWERED_INCORRECTLY = () => (dispatch,getState) => {
   const userID = getState().flashCodes.userID;
   axios.post('/cards/answeredIncorrect', {userID: userID, flashCardID: flashCardID})
     .then(({status}) =>{
@@ -42,11 +43,12 @@ export const ANSWERED_INCORRECTLY = (flashCardID) => (dispatch,getState) => {
 };
  
 // send post request server side to create card use return from post to change state client side 
-export const ADD_CREATED_USER_CARD = (question, answer, topic) => (dispatch,getState ) => {
-  const userID = getState().flashCodes.userID;
-  axios.post('/cards/create', {userID: userID, question: question, answer: answer, topic: topic})
+export const ADD_CREATED_USER_CARD = (problem, answer, category) => (dispatch,getState ) => {
+  const userID = getState().flashCodes.username;
+  axios.post('/cards/create', {username: username, problem: problem, answer: answer, category: category})
     .then((info) =>{
       if(info.status === 200){
+        console.log('the card was added successfully~!')
         dispatch({
           type: types.ADD_CREATED_USER_CARD,
           payload: info.data.create
@@ -126,7 +128,7 @@ export const CREATE_CARD = () => ({
   type: types.CREATE_CARD,
 }) 
  
-// export const Session = () => ({
-//   type: types.Session,
-// }) 
+export const RESET_SESSION = () => ({
+  type: types.RESET_SESSION,
+}) 
  

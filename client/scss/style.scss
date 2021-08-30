@@ -1,3 +1,4 @@
+
 $redColor: #a10532;
 $pinkColor: #ff6fa9;
 $lightOrange:#ffd0cc;
@@ -5,21 +6,40 @@ $lightBlue: #00b7cc;
 $darkBlue:#005f81; 
 
 
+.app-header {
+  background-color: rgba(22, 24, 151, 0.671);
+  font-family: Copperplate, Papyrus, fantasy;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: rgba(22, 24, 151, 0.671);
+}
 
 body {
     max-width: 100%;
     margin: auto;
+    background-color: rgba(24, 104, 207, 0.801);
+    color: $lightOrange
   }    
   
   .container{
     border: 4px;
     border-style: solid;
     min-width:400px;
+    font-family: 'Righteous', cursive;
     min-height: 600px;
+    background-color: rgb(108, 183, 207);
+    padding: 20px;
+    border-radius: 7px;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15);;
   }
   h1{
     display: flex;
     justify-content: center;
+    
   }
 
   #root{
@@ -36,9 +56,9 @@ body {
     padding: .5rem .5rem;
     margin: 0;
     text-decoration: none;
-    background: #00b7cc;
+    background: #a10532;
     color: #ffffff;
-    font-family: sans-serif;
+    font-family: 'Shadows Into Light', cursive;
     font-size: 1rem;
     line-height: 1;
     cursor: pointer;
@@ -49,3 +69,7 @@ body {
     border-radius: 20px;
 }
 
+button:hover {
+  opacity: 0.5;
+  cursor: pointer;
+}
