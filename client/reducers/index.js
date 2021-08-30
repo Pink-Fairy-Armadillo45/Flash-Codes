@@ -9,10 +9,10 @@
  * ************************************
  */
 
- import { combineReducers } from 'redux';
- import flashCodesReducer from './flashCodesReducer';
+import { combineReducers } from 'redux';
+import flashCodesReducer from './flashCodesReducer';
  
- export default combineReducers({
-   flashCodes: flashCodesReducer,
- });
+export default combineReducers({
+  flashCodes: flashCodesReducer,
+});
  
