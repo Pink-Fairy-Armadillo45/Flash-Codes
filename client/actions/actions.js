@@ -25,7 +25,7 @@ export const ANSWERED_CORRECTLY = (flashCardID) => (dispatch, getState) => {
     })
     .catch(console.error)
 };
-  //increment total and answered incorectly client side also make post request server side to make changes
+  //increment total and answered incorrectly client side also make post request server side to make changes
 export const ANSWERED_INCORRECTLY = (flashCardID) => (dispatch,getState) => {
   const userID = getState().flashCodes.userID;
   axios.post('/cards/answeredIncorrect', {userID: userID, flashCardID: flashCardID})
@@ -41,9 +41,9 @@ export const ANSWERED_INCORRECTLY = (flashCardID) => (dispatch,getState) => {
 };
  
 // send post request server side to create card use return from post to change state client side 
-export const ADD_CREATED_USER_CARD = (question, answer) => (dispatch,getState ) => {
+export const ADD_CREATED_USER_CARD = (question, answer, topic) => (dispatch,getState ) => {
   const userID = getState().flashCodes.userID;
-  axios.post('/cards/createCard', {userID: userID, question: question, answer: answer})
+  axios.post('/cards/createCard', {userID: userID, question: question, answer: answer, topic: topic})
     .then((info) =>{
       if(info.status === 200){
         dispatch({
@@ -59,10 +59,11 @@ export const ADD_CREATED_USER_CARD = (question, answer) => (dispatch,getState ) 
 export const ADD_FLASH_CARD_LIST = () => (dispatch, getState) => {
   //in the future will also code to include a users ID to get their information as well
   const chosenTopics = getState().flashCodes.chosenTopics;
-  // console.log('is something getting sent',chosenTopics)
+  console.log('is something getting sent',chosenTopics)
   //query parameters.... or req.body
   axios.post('/cards/category/', {categories:chosenTopics})
     .then((info) => {
+      console.log(info.data)
       if (info.status === 200){
         dispatch({ 
           type: types.ADD_FLASH_CARD_LIST,
@@ -73,11 +74,44 @@ export const ADD_FLASH_CARD_LIST = () => (dispatch, getState) => {
     .catch(console.error);
 };
 
+export const LOGIN = (username, password) => (dispatch, getState) =>{
+  axios.post('/user/authUser/',{username:username, password:password})
+    .then((info) => {
+      console.log(info.data)
+      if (info.status === 200){
+        dispatch({ 
+          type: types.LOGIN,
+          payload: {username: username, userID: info.data.userID}
+        });
+      } 
+    })
+    .catch((e) =>{
+      alert("Incorrect Password. Please try again.")
+    });
+};
+
+export const SIGN_UP = (username, password) => (dispatch, getState) =>{
+  axios.post('/user/createUser/', {username:username, password:password})
+    .then((info) => {
+      console.log(info.data)
+      if (info.status === 200 && info.data.data === true){
+        dispatch({ 
+          type: types.LOGIN,
+          payload: {username: username, userID: info.data.userID}
+        });
+      } 
+    })
+    .catch(e=>{
+      alert("This username already exists please pick a different username")
+    });
+}
+
 //add a topic to the chosentopics array
 export const ADD_TO_TOPICS_LIST = topic => ({
   type: types.ADD_TO_TOPICS_LIST,
   payload: topic,
 }) 
+
 //remoove a topic to the chosentopics array
 export const REMOVE_ONE_TOPICS_LIST = topic => ({
   type: types.REMOVE_ONE_TOPICS_LIST,
@@ -87,4 +121,11 @@ export const REMOVE_ONE_TOPICS_LIST = topic => ({
 export const REVEAL_ANSWER = () => ({
   type: types.REVEAL_ANSWER,
 }) 
+export const CREATE_CARD = () => ({
+  type: types.CREATE_CARD,
+}) 
+ 
+// export const Session = () => ({
+//   type: types.Session,
+// }) 
  

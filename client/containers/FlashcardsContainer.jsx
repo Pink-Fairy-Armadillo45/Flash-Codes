@@ -9,11 +9,19 @@ import * as actions from '../actions/actions';
 // import questions from '
 import Topics from '../components/Topics';
 import Cards from '../components/Cards';
-
+import CreateCard from '../components/CreateCard';
+import Login from '../components/Login';
 
 const mapsStateToProps = (state) => ({
   chosenTopics: state.flashCodes.chosenTopics,
   flashCardList: state.flashCodes.flashCardList,
+  session: state.flashCodes.session,
+  answerShown : state.flashCodes.answerShown,
+  totalCardsAnswered : state.flashCodes.totalCardsAnswered,
+  createdUserCards: state.flashCodes.createdUserCards,
+  userID : state.flashCodes.userID,
+  username : state.flashCodes.username,
+  createCard : state.flashCodes.createCard
 });
 
 
@@ -26,7 +34,19 @@ const mapDispatchToProps = (dispatch) => ({
   },
   submit: () => {
     dispatch(actions.ADD_FLASH_CARD_LIST());
-  }
+  },
+  createUserCard: (question, answer, userID) => {
+    dispatch(actions.ADD_CREATED_USER_CARD(question, answer, userID));
+  },
+  login: (username, password) => {
+    dispatch(actions.LOGIN(username, password));
+  },
+  signUp: (username, password) => {
+    dispatch(actions.SIGN_UP(username, password));
+  },
+  createACard: () => {
+    dispatch(actions.CREATE_CARD());
+  },
 });
 
 
@@ -35,25 +55,76 @@ class FlashcardsContainer extends Component {
     super(props);
   }
 
-  render() {
-    return(
-      <div className="container">
-        <div className="outerBox">
-          <h1 id="header">Flash Code Cards</h1>
+
+  displaySession(){
+    if(this.props.session === false){
+      return (
           <Topics 
           chosenTopics={this.props.chosenTopics} 
           selectTopic={this.props.selectTopic}
           deselectTopic={this.props.deselectTopic}
           submit={this.props.submit}
           />
+      )
+    }else{
+      return(
+              <div>Session in progress.</div>
+      )
+    }
+
+  }
+
+  UserCreatingCard(){
+    if(this.props.session === false && this.props.userID !== null){
+      return (
+          <CreateCard 
+
+          submit={this.props.submit}
+          />
+      )
+    }else{
+      return(
+              <div>New Card Being Created</div>
+      )
+    }
+  }
+
+  checkCreateCard(){
+    if(this.props.session === false && this.props.userID !== null){
+      if(this.props.createCard){
+        //console.log(this.)
+        return  (<CreateCard 
+        submit={this.props.submit}
+        />)
+      }else{
+       return (<button id='loginStuff' className="primary" type="submit" onClick={()=>{this.props.createACard()}}>Create a new Flashcard</button>) 
+      }
+    }
+  }
+
+
+
+
+  render() {
+    return(
+      <div className="container">
+        <div className="outerBox">
+          <h1 id="header">Flash Code Cards</h1>
+          {this.checkCreateCard()}
+          {/* {this.UserCreatingCard()} */}
+          {this.displaySession()}
+          {this.props.userID === null? <Login login = {this.props.login} signUp ={this.props.signUp} /> : 'Welcome ' + this.props.username}
           <Cards 
-          flashCardList={this.props.flashCardList}
+            flashCardList={this.props.flashCardList}
+            session= {this.props.session}
+            answerShown = {this.props.answerShown} 
+            totalCardsAnswered = {this.props.totalCardsAnswered} 
+            chosenTopics = {this.props.chosenTopics}
            />
         </div>
       </div>
-    );
+    )
   }
-
 }
 
 export default connect(mapsStateToProps, mapDispatchToProps)(FlashcardsContainer);

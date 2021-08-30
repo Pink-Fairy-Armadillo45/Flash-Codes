@@ -5,6 +5,7 @@ import styles from './scss/style.scss';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import store from './store';
+
 // uncomment so that webpack can bundle styles
 
 

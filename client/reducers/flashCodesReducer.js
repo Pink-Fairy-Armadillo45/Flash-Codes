@@ -12,7 +12,8 @@
  import * as types from '../constants/actionTypes';
 
  const initialState = {
-   userID: null,
+   username: null,
+   userID:null,
    totalCardsAnswered: 0,
    answeredRight: 0,
    answeredWrong: 0,
@@ -20,7 +21,9 @@
    flashCardList:[],
    createdUserCards:[],
    chosenTopics:[],
-   answerShown :false
+   answerShown :false,
+   session: false,
+   createCard: false
  };
   
  const flashCodesReducer = (state = initialState, action) => {
@@ -76,13 +79,15 @@
    //add flashcards queried from the data base
    case types.ADD_FLASH_CARD_LIST: {        
      const newFlashCards = action.payload
+     const newSession = true
      return {...state,
-       flashCardList: newFlashCards
+       flashCardList: newFlashCards,
+       session: newSession
      }
    }
  
       
-   //add a topic to the chose topics array
+   //add a topic to the chosen topics array
    case types.ADD_TO_TOPICS_LIST: {       
      let newChosenTopics = JSON.parse(JSON.stringify(state.chosenTopics))
      if(action.payload === 'all'){
@@ -110,6 +115,27 @@
        answerShown: newAnswerShown
      }
    }
+   case types.CREATE_CARD: {
+     const newCreateCard = true
+     return {...state,
+       createCard: newCreateCard
+     }
+   }
+   case types.LOGIN: {
+     const newUserID = action.payload.userID
+     const newUsername = action.payload.username
+     return {...state,
+       userID: newUserID,
+       username: newUsername
+     }
+   }
+ 
+  //  case types.Session: {
+  //    const newSession = true
+  //    return {...state,
+  //      session: newSession
+  //    }
+  //  }
  
   
    default:
