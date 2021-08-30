@@ -18,5 +18,6 @@ export const REMOVE_ONE_TOPICS_LIST = 'REMOVE_ONE_TOPICS_LIST ';
 export const REVEAL_ANSWER = 'REVEAL_ANSWER ';
 export const LOGIN = 'LOGIN';
 export const SIGN_UP = 'SIGN_UP';
+export const CREATE_CARD = 'CREATE-CARD';
 // export const Session = 'Session ';
 
