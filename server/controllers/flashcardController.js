@@ -26,16 +26,18 @@ flashcardController.getAllCards = (req, res, next) => {
 // TODO: create logic to generate query string based on number of categories sent back
 
 flashcardController.getCardsByCategory = (req, res, next) => {
-    console.log('does this happen');
   const body = req.body.categories;
-  console.log(Array.isArray(body));
+  // console.log(req.body.categories)
+  // console.log('Getting cards by category: ', body);
+  // console.log(Array.isArray(body));
   let query = `
    SELECT *
    FROM flash_cards
    `
+  //  console.log(body, body.length === 0);
    //if no category specified, return all flashcards
-   console.log(body, body.length === 0);
    if(body.length === 0){
+      // console.log(body, body.length === 0);
      query += ';';
     db.query(query)
     .then(response => {
@@ -52,16 +54,16 @@ flashcardController.getCardsByCategory = (req, res, next) => {
    }
    // categories selected: return flashcards where category matches
    else {
-     console.log('has category', query);
      let categorySelect = 'WHERE ';
      body.forEach((category, index) => {
        if(index === body.length - 1){
          categorySelect = categorySelect.concat(`category=$${index+1};`);
-       } else {
-         categorySelect = categorySelect.concat(`category=$${index+1} OR `);
-       }
-     });
-     query = query.concat(categorySelect);
+        } else {
+          categorySelect = categorySelect.concat(`category=$${index+1} OR `);
+        }
+      });
+      query = query.concat(categorySelect);
+      // console.log('has category', query);
      db.query(query, body)
      .then(response => {
        res.locals.cards = response.rows;
@@ -79,24 +81,5 @@ flashcardController.getCardsByCategory = (req, res, next) => {
 
    
 };
-
-// flashcardController.getCardsByCategory = (req, res, next) => {
-//   const category = req.params.category;
-//   console.log(category);
-//   const query = `
-//   SELECT *
-//   FROM flash_cards
-//   WHERE category = $1;
-//   `
-//   db.query(query, [category])
-//   .then(response => {
-//     res.locals.cardsByCategory = response.rows;
-//     return next();
-//   })
-//   .catch(err => {
-//     console.log('ERROR IN getCardsByCategory', err);
-//     return next(err);
-//   })
-// }
 
 module.exports = flashcardController;

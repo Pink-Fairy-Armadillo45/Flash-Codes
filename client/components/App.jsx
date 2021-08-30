@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
+import FlashcardsContainer from '../containers/FlashcardsContainer';
 const axios = require('axios');
 
 
@@ -15,7 +16,7 @@ class App extends Component {
    
     return (
       <div>
-          <p>Is this rendering!?!??!!?!?!?! </p>
+          <FlashcardsContainer />
       </div>
     );
   }
