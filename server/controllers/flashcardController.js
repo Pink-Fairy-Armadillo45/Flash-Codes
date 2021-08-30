@@ -76,10 +76,12 @@ flashcardController.getCardsByCategory = (req, res, next) => {
           message: {err: 'Error accessing database - see server logs'}
         })
       })
-   };
-
-
-   
+   };   
 };
 
+// if answered correctly -> increment global total(query for flashcard -> increment global total -> insert into db), 
+// -> increment correct_num in uses_in_cards table(query for matching row in users/cards table -> if not exist, insert. if exist update)
+flashcardController.incrementGlobalTotal = (req, res, next) => {
+  
+}
 module.exports = flashcardController;

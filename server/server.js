@@ -5,6 +5,7 @@ const PORT = 3000;
 const cookieParser = require('cookie-parser');
 const fetch = require('node-fetch');
 const cardsRouter = require('./routers/flashcardRouter.js');
+const userRouter = require('./routers/userRouter.js');
 require('dotenv').config();
 
 // handle parsing body and url
@@ -13,6 +14,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // routers
 app.use('/cards/', cardsRouter);
+app.use('/user/', userRouter);
 
 // serve static pages
 app.use(express.static(path.resolve(__dirname, '../client')));
