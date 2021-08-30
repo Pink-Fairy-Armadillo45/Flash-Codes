@@ -35,8 +35,8 @@ const mapDispatchToProps = (dispatch) => ({
   submit: () => {
     dispatch(actions.ADD_FLASH_CARD_LIST());
   },
-  createUserCard: (question, answer, userID) => {
-    dispatch(actions.ADD_CREATED_USER_CARD(question, answer, userID));
+  createUserCard: (question, answer, topic) => {
+    dispatch(actions.ADD_CREATED_USER_CARD(question, answer, topic));
   },
   login: (username, password) => {
     dispatch(actions.LOGIN(username, password));
@@ -78,8 +78,7 @@ class FlashcardsContainer extends Component {
     if(this.props.session === false && this.props.userID !== null){
       return (
           <CreateCard 
-
-          submit={this.props.submit}
+          createUserCard={this.props.createUserCard}
           />
       )
     }else{

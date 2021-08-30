@@ -2,22 +2,43 @@ import React from 'react';
 import {connect} from 'react-redux';
 import * as actions from '../actions/actions';
 
+const useInput = init => {
+    const [ value, setValue ] = useState(init);
+    const onChange = e => {
+
+      setValue(e.target.value);
+    };
+    // return the value with the onChange function instead of setValue function
+    return [ value, onChange ];
+  };
+  
 const CreateCard = props => {
-// 
+ const [question, setQuestion] =useInput('')
+ const [answer, setAnswer] =useInput('')
+
+ const sendNewcard = () =>{
+    const topic = document.querySelector('#topics').value
+    props.submit(question, answer, topic) 
+ }
 
 return(
     <div className="createCard">
         <div>
-            <input type='checkbox' id='topic 1' name='topic 1'  onChange={(e) => {
-                    if(e.target.checked) return props.selectTopic(e.target.id);
-                    else return props.deselectTopic(e.target.id); 
-                    }} required/> Topic
+            <form>
+            <select name="Topics" id="topics" required>
+                <option value="Unit 1">Unit 1</option>
+                <option value="Unit 2">Unit 2</option>
+                <option value="Unit 3">Unit 3</option>
+                <option value="Unit 4">Unit 4</option>
+            </select>
                 <div>
-                    Question: <input type="text" id='Question' name='Question' required />
-                    Answer: <input type="text" id='Answer' name='Answer' required/>
-                </div>
+                    Question: <input type="text" id='Question' name='Question' value ={question} onChange={setQuestion} required />
+                    Answer: <input type="text" id='Answer' name='Answer' value ={answer} onChange={setAnswer} required/>
+                </div>  
+                <input type='button' value='Submit' name='Submit UserCard' onClick={() => {sendNewcard()}} /> 
+            </form>
         <div>
-        <input type='button' value='Submit' name='Submit UserCard' onClick={() => props.submit() } /> 
+      
     </div>
         {/* <input type ='button' /> */}
         {/* <h1>{props.chosenTopics.length !== 0  ? props.chosenTopics : "chosen topics"}</h1>

@@ -25,6 +25,7 @@ export const ANSWERED_CORRECTLY = (flashCardID) => (dispatch, getState) => {
     })
     .catch(console.error)
 };
+
   //increment total and answered incorrectly client side also make post request server side to make changes
 export const ANSWERED_INCORRECTLY = (flashCardID) => (dispatch,getState) => {
   const userID = getState().flashCodes.userID;
@@ -43,12 +44,12 @@ export const ANSWERED_INCORRECTLY = (flashCardID) => (dispatch,getState) => {
 // send post request server side to create card use return from post to change state client side 
 export const ADD_CREATED_USER_CARD = (question, answer, topic) => (dispatch,getState ) => {
   const userID = getState().flashCodes.userID;
-  axios.post('/cards/createCard', {userID: userID, question: question, answer: answer, topic: topic})
+  axios.post('/cards/create', {userID: userID, question: question, answer: answer, topic: topic})
     .then((info) =>{
       if(info.status === 200){
         dispatch({
           type: types.ADD_CREATED_USER_CARD,
-          payload: info.data.flashCard
+          payload: info.data.create
         })
       }
     })

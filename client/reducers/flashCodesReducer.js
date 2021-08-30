@@ -69,9 +69,11 @@
    case types.ADD_CREATED_USER_CARD: {        
      const newCreatedUserCards = JSON.parse(JSON.stringify(state.createdUserCards))
      newCreatedUserCards.push(action.payload)
+     const newCreateCard = false
      return {
        ...state,
-       createdUserCards: newCreatedUserCards
+       createdUserCards: newCreatedUserCards,
+       createCard : newCreateCard
      }
    }
  
