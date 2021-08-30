@@ -5,11 +5,11 @@ import { connect } from 'react-redux';
 import * as actions from '../actions/actions.js'
 
 const mapDispatchToProps = dispatch => ({
-    passCard: (cardId) => {
-        dispatch(actions.ANSWERED_CORRECTLY(cardId))
+    passCard: (flashCardID) => {
+        dispatch(actions.ANSWERED_CORRECTLY(flashCardID))
     },
-    failCard: (cardId) => {
-        dispatch(actions.ANSWERED_INCORRECTLY(cardId))
+    failCard: (flashCardID) => {
+        dispatch(actions.ANSWERED_INCORRECTLY(flashCardID))
     }
 })
 class ButtonContainer extends Component {
@@ -19,11 +19,12 @@ class ButtonContainer extends Component {
     render() {
         return (
         <div className="responseButton">
-            <Pass handleclick={this.props.passCard}/>
-            <Fail handleclick={this.props.failCard}/>
+            <Pass handleClick={this.props.passCard}/>
+            <Fail handleClick={this.props.failCard}/>
         </div>
         );
     };
 };
+
 
 export default connect(null, mapDispatchToProps)(ButtonContainer);
