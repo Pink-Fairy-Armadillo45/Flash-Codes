@@ -12,7 +12,8 @@
  import * as types from '../constants/actionTypes';
 
  const initialState = {
-   userID: null,
+   username: null,
+   userID:null,
    totalCardsAnswered: 0,
    answeredRight: 0,
    answeredWrong: 0,
@@ -111,6 +112,14 @@
      const newAnswerShown = true
      return {...state,
        answerShown: newAnswerShown
+     }
+   }
+   case types.LOGIN: {
+     const newUserID = action.payload.userID
+     const newUsername = action.payload.username
+     return {...state,
+       userID: newUserID,
+       username: newUsername
      }
    }
  

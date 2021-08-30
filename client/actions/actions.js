@@ -74,6 +74,37 @@ export const ADD_FLASH_CARD_LIST = () => (dispatch, getState) => {
     .catch(console.error);
 };
 
+export const LOGIN = (username, password) => (dispatch, getState) =>{
+  axios.post('/user/authUser/',{username:username, password:password})
+    .then((info) => {
+      console.log(info.data)
+      if (info.status === 200){
+        dispatch({ 
+          type: types.LOGIN,
+          payload: {username: username, userID: info.data.userID}
+        });
+      } 
+    })
+    .catch((e) =>{
+      alert("Incorrect Password. Please try again.")
+    });
+};
+
+export const SIGN_UP = (username, password) => (dispatch, getState) =>{
+  axios.post('/user/createUser/', {username:username, password:password})
+    .then((info) => {
+      console.log(info.data)
+      if (info.status === 200 && info.data.data === true){
+        dispatch({ 
+          type: types.LOGIN,
+          payload: {username: username, userID: info.data.userID}
+        });
+      } 
+    })
+    .catch(e=>{
+      alert("This username already exists please pick a different username")
+    });
+}
 
 //add a topic to the chosentopics array
 export const ADD_TO_TOPICS_LIST = topic => ({
