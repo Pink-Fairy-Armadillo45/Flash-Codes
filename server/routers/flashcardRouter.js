@@ -26,5 +26,8 @@ router.post('/answeredIncorrect', flashcardController.incrementGlobalTotal, flas
   return res.status(200).send();
 })
 
+router.post('/create', flashcardController.createCard, (req, res) => {
+  return res.status(200).json(res.locals.newCard);
+});
 
 module.exports = router;
