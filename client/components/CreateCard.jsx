@@ -13,8 +13,8 @@ return(
                     else return props.deselectTopic(e.target.id); 
                     }} required/> Topic
                 <div>
-                    <input type="text" id='Question' name='Question' required />
-                    <input type="text" id='Answer' name='Answer' required/>
+                    Question: <input type="text" id='Question' name='Question' required />
+                    Answer: <input type="text" id='Answer' name='Answer' required/>
                 </div>
         <div>
         <input type='button' value='Submit' name='Submit UserCard' onClick={() => props.submit() } /> 

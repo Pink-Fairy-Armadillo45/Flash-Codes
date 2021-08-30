@@ -22,7 +22,8 @@
    createdUserCards:[],
    chosenTopics:[],
    answerShown :false,
-   session: false
+   session: false,
+   createCard: false
  };
   
  const flashCodesReducer = (state = initialState, action) => {
@@ -112,6 +113,12 @@
      const newAnswerShown = true
      return {...state,
        answerShown: newAnswerShown
+     }
+   }
+   case types.CREATE_CARD: {
+     const newCreateCard = true
+     return {...state,
+       createCard: newCreateCard
      }
    }
    case types.LOGIN: {

@@ -121,6 +121,9 @@ export const REMOVE_ONE_TOPICS_LIST = topic => ({
 export const REVEAL_ANSWER = () => ({
   type: types.REVEAL_ANSWER,
 }) 
+export const CREATE_CARD = () => ({
+  type: types.CREATE_CARD,
+}) 
  
 // export const Session = () => ({
 //   type: types.Session,
