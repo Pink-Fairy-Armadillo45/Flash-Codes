@@ -248,4 +248,27 @@ flashcardController.incorrect = async (req, res, next) => {
     })
   }
 }
+
+flashcardController.createCard = (req, res, next) => {
+  const problem = req.body.problem;
+  const answer = req.body.answer;
+  const userId = req.body.userID;
+  const id = uuidv4();
+  const category = req.body.category;
+
+  const query = `
+  INSERT INTO flash_cards (_id, problem, answer, global_total, category, created_by)
+  VALUES ($1, $2, $3, $4, $5, $6);
+  `;
+  db.query(query, [id, problem, answer, '0', category, userId])
+  .then((response) => {
+    res.locals.newCard = response.rows[0];
+    return next();
+  })
+  .catch((error) => {
+    console.log('Error in creating card:', error);
+    return next(error);
+  })
+
+}
 module.exports = flashcardController;
