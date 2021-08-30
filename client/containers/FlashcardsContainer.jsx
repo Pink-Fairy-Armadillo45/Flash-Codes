@@ -12,8 +12,8 @@ import Cards from '../components/Cards';
 
 
 const mapsStateToProps = (state) => ({
-  chosenTopics: state.chosenTopics,
-  flashCardList: state.flashCardList,
+  chosenTopics: state.flashCodes.chosenTopics,
+  flashCardList: state.flashCodes.flashCardList,
 });
 
 class FlashcardsContainer extends Component {
@@ -47,4 +47,4 @@ class FlashcardsContainer extends Component {
     }
   });
 
-export default connect(mapsStateToProps, mapDispatchToProps)(cards);
+export default connect(mapsStateToProps, mapDispatchToProps)(FlashcardsContainer);
