@@ -17,12 +17,12 @@ router.post('/category/', flashcardController.getCardsByCategory, (req, res) => 
 // req body: userid and cardid 
 // if answered correctly -> increment global total(query for flashcard -> increment global total -> insert into db), 
 // -> increment correct_num in uses_in_cards table(query for matching row in users/cards table -> if not exist, insert. if exist update)
-router.post('/answeredCorrect', (req, res) => {
+router.post('/answeredCorrect', flashcardController.incrementGlobalTotal, flashcardController.correct, (req, res) => {
   return res.status(200).send();
 })
 
 // if answered incorrectly -> increment global total, -> increment incorrect_num in uses_in_cards table
-router.post('/answeredIncorrect', (req, res) => {
+router.post('/answeredIncorrect', flashcardController.incrementGlobalTotal, flashcardController.incorrect, (req, res) => {
   return res.status(200).send();
 })
 
