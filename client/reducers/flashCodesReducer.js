@@ -20,7 +20,8 @@
    flashCardList:[],
    createdUserCards:[],
    chosenTopics:[],
-   answerShown :false
+   answerShown :false,
+   session: false
  };
   
  const flashCodesReducer = (state = initialState, action) => {
@@ -76,13 +77,15 @@
    //add flashcards queried from the data base
    case types.ADD_FLASH_CARD_LIST: {        
      const newFlashCards = action.payload
+     const newSession = true
      return {...state,
-       flashCardList: newFlashCards
+       flashCardList: newFlashCards,
+       session: newSession
      }
    }
  
       
-   //add a topic to the chose topics array
+   //add a topic to the chosen topics array
    case types.ADD_TO_TOPICS_LIST: {       
      let newChosenTopics = JSON.parse(JSON.stringify(state.chosenTopics))
      if(action.payload === 'all'){
@@ -110,6 +113,13 @@
        answerShown: newAnswerShown
      }
    }
+ 
+  //  case types.Session: {
+  //    const newSession = true
+  //    return {...state,
+  //      session: newSession
+  //    }
+  //  }
  
   
    default:
