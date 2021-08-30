@@ -94,7 +94,7 @@ flashcardController.incrementGlobalTotal = async (req, res, next) => {
   await db.query(query1, [flashcardid])
     .then(response => {
       const currentGlobalTotal = response.rows[0].global_total;
-      newGlobalTotal = Number(currentGlobalTotal) + 1;
+      newGlobalTotal = currentGlobalTotal + 1;
     })
     .catch(error => next({
       log: error,
@@ -106,7 +106,7 @@ flashcardController.incrementGlobalTotal = async (req, res, next) => {
     UPDATE flash_cards
     SET global_total=$1
     WHERE _id=$2`;
-  await db.query(query2, [newGlobalTotal.toString(), flashcardid])
+  await db.query(query2, [newGlobalTotal, flashcardid])
     .then(response => {
       return next();
     })
@@ -252,7 +252,7 @@ flashcardController.incorrect = async (req, res, next) => {
 flashcardController.createCard = (req, res, next) => {
   const problem = req.body.problem;
   const answer = req.body.answer;
-  const userId = req.body.userID;
+  const username = req.body.username;
   const id = uuidv4();
   const category = req.body.category;
 
@@ -260,7 +260,7 @@ flashcardController.createCard = (req, res, next) => {
   INSERT INTO flash_cards (_id, problem, answer, global_total, category, created_by)
   VALUES ($1, $2, $3, $4, $5, $6);
   `;
-  db.query(query, [id, problem, answer, '0', category, userId])
+  db.query(query, [id, problem, answer, '0', category, username])
   .then((response) => {
     res.locals.newCard = response.rows[0];
     return next();
