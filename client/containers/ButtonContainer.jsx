@@ -15,12 +15,13 @@ const mapDispatchToProps = dispatch => ({
 class ButtonContainer extends Component {
     constructor(props) {
         super(props)
-    }
+
+     }
     render() {
         return (
         <div className="responseButton">
-            <Pass handleClick={this.props.passCard}/>
-            <Fail handleClick={this.props.failCard}/>
+            <Pass handlePassClick={this.props.passCard}/>
+            <Fail handleFailClick={this.props.failCard}/>
         </div>
         );
     };

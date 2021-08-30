@@ -9,11 +9,17 @@ router.get('/getCards/', flashcardController.getAllCards, (req, res) => {
 
 // get request for all cards of a multiple category
 
-router.get('/category/', flashcardController.getCardsByCategory, (req, res) => {
+router.post('/category/', flashcardController.getCardsByCategory, (req, res) => {
   return res.status(200).json(res.locals.cards);
 })
 
-//random order get cards
+router.post('/answeredCorrect', (req, res) => {
+  return res.status(200).send();
+})
 
-//
+router.post('/answeredIncorrect', (req, res) => {
+  return res.status(200).send();
+})
+
+
 module.exports = router;

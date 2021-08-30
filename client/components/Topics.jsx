@@ -10,18 +10,29 @@
  */
  import React from 'react';
 
+
+ 
 const Topics = props => (
-
-//     //on change i would push that value into my chosentopics array
-//     //submit button that would send state.chosentopics to the db
-
 
     <div className = "Topics">
         <div>
-            Topics:
+            Select Which Topics You'd Like To Review:
             <div className='button-container'>
-                <input type='checkbox' onChange={props.chosenTopics[/*place holder until we decide our action type*/]} value='Topic1'/>
-                <input type='button' onClick={props.chosenTopics[/*place holder until we decide our action type*/]} value='Topic2'/>
+            <input type='checkbox' id='Unit 1' name='Unit 1' onChange={(e) => {
+                if(e.target.checked) return props.selectTopic(e.target.id);
+                else return props.deselectTopic(e.target.id); 
+                }}/> Unit 1
+            <input type='checkbox' id='Unit 2' name='Unit 2' onChange={(e) => {
+                if(e.target.checked) return props.selectTopic(e.target.id);
+                else return props.deselectTopic(e.target.id); 
+                }}/> Yo Momma
+            <input type='checkbox' id='Unit 3' name='Unit 3' onChange={(e) => {
+                if(e.target.checked) return props.selectTopic(e.target.id);
+                else return props.deselectTopic(e.target.id); 
+                }}/> Unit 3
+                <div>
+                    <input type='button' value='Submit' name='Begin Review' onClick={() => props.submit() } /> 
+                </div>
             </div>
         </div>
     </div>
