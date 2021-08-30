@@ -16,6 +16,7 @@ export const ADD_FLASH_CARD_LIST = 'ADD_FLASH_CARD_LIST ';
 export const ADD_TO_TOPICS_LIST = 'ADD_TO_TOPICS_LIST ';
 export const REMOVE_ONE_TOPICS_LIST = 'REMOVE_ONE_TOPICS_LIST ';
 export const REVEAL_ANSWER = 'REVEAL_ANSWER ';
-export const LOGIN = 'LOGIN ';
+export const LOGIN = 'LOGIN';
+export const SIGN_UP = 'SIGN_UP';
 // export const Session = 'Session ';
 

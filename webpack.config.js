@@ -36,6 +36,10 @@ module.exports = (env) => {
           target: 'http://localhost:3000',
           secure: false,
         },
+        '/user/**': {
+          target: 'http://localhost:3000',
+          secure: false,
+        },
       },
       // static: {
       //   directory: path.join(__dirname, 'build'),

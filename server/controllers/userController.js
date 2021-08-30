@@ -21,9 +21,10 @@ userController.createUser = (req, res, next) => {
   INSERT INTO users (_id, username, password)
   SELECT $1, $2, $3;
   `;
-  // should we write logic to check if username already exist inside db? this can be a stretch goal?
+
   db.query(query, [id, username, password])
   .then((response) => {
+    res.locals.userID = id;
     return next();
   })
   .catch(error => {
@@ -66,14 +67,20 @@ userController.verifyUser = (req, res, next) => {
     const query = `
         SELECT *
         FROM users
-        WHERE username=$1 AND password=$2`;
+        WHERE username=$1 AND password=$2;
+        `;
     // query db to find username and password combo
-    db.query(query)
-        .then(response => next())
-        .catch(error => next({
+    db.query(query, [username, password])
+        .then(response => {
+          res.locals.userID = response.rows[0]._id;
+          return next();
+        })
+        .catch(error => {
+          return next({
             log: error,
             message: error
-        }));
+               });
+         });
 }
 
 module.exports = userController;
