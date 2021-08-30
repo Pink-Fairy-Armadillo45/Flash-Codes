@@ -3,66 +3,112 @@
 //  * @date    8.28.21
 //  * @description Presentation component that renders the card questions/answers and correct/incorrect buttons
 
-// import React from 'react';
-// // import { connect } from 'react-redux';
-// // import * as actions from '../actions/actions';
-// // import questions from '
-// const mapsStateToProps = (state) => ({
+import React, {Component} from 'react';
+import { connect } from 'react-redux';
+import * as actions from '../actions/actions';
+// import questions from '
+import Topics from '../components/Topics';
+import Cards from '../components/Cards';
+import CreateCard from '../components/CreateCard';
+import Login from '../components/Login';
 
-// });
-// class flashcards extends Component {
-//   constructor(props) {
-//     super(props);
-//   }
+const mapsStateToProps = (state) => ({
+  chosenTopics: state.flashCodes.chosenTopics,
+  flashCardList: state.flashCodes.flashCardList,
+  session: state.flashCodes.session,
+  answerShown : state.flashCodes.answerShown,
+  totalCardsAnswered : state.flashCodes.totalCardsAnswered,
+  createdUserCards: state.flashCodes.createdUserCards,
+  userID : state.flashCodes.userID,
+  username : state.flashCodes.username
+});
 
-//   render() {
-//     return(
-//       <div className="container">
-//         <div className="outerBox">
-//           <h1 id="header">Flash Code Cards</h1>
-//           <questions/>
-//           <answers />
-//           { /* Start adding components here... 
-          
-//             // MarketCreator
 
-//             // MarketsDisplay
-          
-//           */ }
-//         </div>
-//       </div>
-//     );
-//   }
+const mapDispatchToProps = (dispatch) => ({
+  selectTopic: (topicId) => {
+    dispatch(actions.ADD_TO_TOPICS_LIST(topicId));
+  },
+  deselectTopic: (topicId) => {
+    dispatch(actions.REMOVE_ONE_TOPICS_LIST(topicId));
+  },
+  submit: () => {
+    dispatch(actions.ADD_FLASH_CARD_LIST());
+  },
+  createCard: (question, answer, userID) => {
+    dispatch(actions.ADD_CREATED_USER_CARD(question, answer, userID));
+  },
+  login: (username, password) => {
+    dispatch(actions.LOGIN(username, password));
+  },
+  signUp: (username, password) => {
+    dispatch(actions.SIGN_UP(username, password));
+  }
+});
 
-// }
-// class 
 
-// const flashCard = props => (
+class FlashcardsContainer extends Component {
+  constructor(props) {
+    super(props);
+  }
 
-//     <div className="cardBox">
-//       <h1>{props.cards}</h1>
-//       <h1>{props.cardId}</h1>
-//       <h1>{props.userId}</h1>
-//       <h1>{props.globalTotal}</h1>
-//       <button type="button" onClick={() => props.correctAns(props.cardId) } >Correct</button>
-//       <button type="button" onClick={() => props.wrongAns(props.cardId) } >Wrong</button>
-//     </div>
-//   );
 
- 
-  // const mapDispatchToProps = (dispatch) => ({
-  //   correctCard: (cardId) => {
-  //     dispatch(actions.nextCardActionCreator(cardId));
-  //   },
-  //   incorrectCard: (cardId) => {
-  //     dispatch(actions.nextCardActionCreator(cardId));
-  //   }
-  // });
-// const flashcard = 
-// props.question
-// props.answer
-// props.cardsId
-// props.globalTotal
-// props.category
-// props.createdBy
-// export default connect(mapsStateToProps, mapDispatchToProps)(cards);
+  displaySession(){
+    if(this.props.session === false){
+      return (
+          <Topics 
+          chosenTopics={this.props.chosenTopics} 
+          selectTopic={this.props.selectTopic}
+          deselectTopic={this.props.deselectTopic}
+          submit={this.props.submit}
+          />
+      )
+    }else{
+      return(
+              <div>Session in progress.</div>
+      )
+    }
+
+  }
+
+  UserCreatingCard(){
+    if(this.props.session === false){
+      return (
+          <CreateCard 
+          chosenTopics={this.props.chosenTopics} 
+          selectTopic={this.props.selectTopic}
+          deselectTopic={this.props.deselectTopic}
+          submit={this.props.submit}
+          />
+      )
+    }else{
+      return(
+              <div>New Card Being Created</div>
+      )
+    }
+
+  }
+
+
+
+  render() {
+    return(
+      <div className="container">
+        <div className="outerBox">
+          <h1 id="header">Flash Code Cards</h1>
+          {this.UserCreatingCard()}
+          {this.displaySession()}
+          {this.props.userID === null? <Login login = {this.props.login} signUp ={this.props.signUp} /> : 'Welcome ' + this.props.username}
+          <Cards 
+            flashCardList={this.props.flashCardList}
+            session= {this.props.session}
+            answerShown = {this.props.answerShown} 
+            totalCardsAnswered = {this.props.totalCardsAnswered} 
+            chosenTopics = {this.props.chosenTopics}
+           />
+        </div>
+      </div>
+    )
+  }
+}
+
+export default connect(mapsStateToProps, mapDispatchToProps)(FlashcardsContainer);
