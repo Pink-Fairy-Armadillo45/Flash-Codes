@@ -14,6 +14,9 @@ import Cards from '../components/Cards';
 const mapsStateToProps = (state) => ({
   chosenTopics: state.flashCodes.chosenTopics,
   flashCardList: state.flashCodes.flashCardList,
+  session: state.flashCodes.session,
+  answerShown : state.flashCodes.answerShown,
+  totalCardsAnswered : state.flashCodes.totalCardsAnswered
 });
 
 
@@ -35,25 +38,42 @@ class FlashcardsContainer extends Component {
     super(props);
   }
 
-  render() {
-    return(
-      <div className="container">
-        <div className="outerBox">
-          <h1 id="header">Flash Code Cards</h1>
+
+  displaySession(){
+    if(this.props.session === false){
+      return (
           <Topics 
           chosenTopics={this.props.chosenTopics} 
           selectTopic={this.props.selectTopic}
           deselectTopic={this.props.deselectTopic}
           submit={this.props.submit}
           />
+      )
+    }else{
+      return(
+              <div>Session in progress.</div>
+      )
+    }
+
+  }
+
+  render() {
+    return(
+      <div className="container">
+        <div className="outerBox">
+          <h1 id="header">Flash Code Cards</h1>
+          {this.displaySession()}
           <Cards 
-          flashCardList={this.props.flashCardList}
+            flashCardList={this.props.flashCardList}
+            session= {this.props.session}
+            answerShown = {this.props.answerShown} 
+            totalCardsAnswered = {this.props.totalCardsAnswered} 
+            chosenTopics = {this.props.chosenTopics}
            />
         </div>
       </div>
-    );
+    )
   }
-
 }
 
 export default connect(mapsStateToProps, mapDispatchToProps)(FlashcardsContainer);

@@ -6,9 +6,11 @@ import * as actions from '../actions/actions.js'
 
 const mapDispatchToProps = dispatch => ({
     passCard: (flashCardID) => {
+        console.log('this is passing')
         dispatch(actions.ANSWERED_CORRECTLY(flashCardID))
     },
     failCard: (flashCardID) => {
+        console.log('this is failing')
         dispatch(actions.ANSWERED_INCORRECTLY(flashCardID))
     }
 })

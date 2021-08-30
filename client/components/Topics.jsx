@@ -25,7 +25,7 @@ const Topics = props => (
             <input type='checkbox' id='Unit 2' name='Unit 2' onChange={(e) => {
                 if(e.target.checked) return props.selectTopic(e.target.id);
                 else return props.deselectTopic(e.target.id); 
-                }}/> Yo Momma
+                }}/> Unit 2
             <input type='checkbox' id='Unit 3' name='Unit 3' onChange={(e) => {
                 if(e.target.checked) return props.selectTopic(e.target.id);
                 else return props.deselectTopic(e.target.id); 
