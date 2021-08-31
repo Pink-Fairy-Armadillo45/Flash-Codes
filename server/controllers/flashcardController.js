@@ -94,7 +94,7 @@ flashcardController.incrementGlobalTotal = async (req, res, next) => {
   await db.query(query1, [flashcardid])
     .then(response => {
       const currentGlobalTotal = response.rows[0].global_total;
-      newGlobalTotal = currentGlobalTotal + 1;
+      newGlobalTotal = Number(currentGlobalTotal)+1;
     })
     .catch(error => next({
       log: error,
