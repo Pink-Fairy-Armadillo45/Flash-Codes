@@ -19,5 +19,5 @@ export const REVEAL_ANSWER = 'REVEAL_ANSWER ';
 export const LOGIN = 'LOGIN';
 export const SIGN_UP = 'SIGN_UP';
 export const CREATE_CARD = 'CREATE-CARD';
-// export const Session = 'Session ';
+export const RESET_SESSION = 'RESET_SESSION ';
 

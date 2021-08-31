@@ -69,9 +69,11 @@
    case types.ADD_CREATED_USER_CARD: {        
      const newCreatedUserCards = JSON.parse(JSON.stringify(state.createdUserCards))
      newCreatedUserCards.push(action.payload)
+     const newCreateCard = false
      return {
        ...state,
-       createdUserCards: newCreatedUserCards
+       createdUserCards: newCreatedUserCards,
+       createCard : newCreateCard
      }
    }
  
@@ -130,12 +132,12 @@
      }
    }
  
-  //  case types.Session: {
-  //    const newSession = true
-  //    return {...state,
-  //      session: newSession
-  //    }
-  //  }
+   case types.RESET_SESSION: {
+     const newSession = false
+     return {...state,
+       session: newSession
+     }
+   }
  
   
    default:

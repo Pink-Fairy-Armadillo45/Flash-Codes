@@ -84,7 +84,7 @@ flashcardController.getCardsByCategory = (req, res, next) => {
 // if answered correctly -> increment global total(query for flashcard -> increment global total -> insert into db), 
 // -> increment correct_num in uses_in_cards table(query for matching row in users/cards table -> if not exist, insert. if exist update)
 flashcardController.incrementGlobalTotal = async (req, res, next) => {
-  const flashcardid = req.body.flashcardID;
+  const flashcardid = req.body.flashCardID;
   let newGlobalTotal = 0;
   //query for flashcard using cardid
   const query1 = `
@@ -94,7 +94,7 @@ flashcardController.incrementGlobalTotal = async (req, res, next) => {
   await db.query(query1, [flashcardid])
     .then(response => {
       const currentGlobalTotal = response.rows[0].global_total;
-      newGlobalTotal = currentGlobalTotal + 1;
+      newGlobalTotal = Number(currentGlobalTotal)+1;
     })
     .catch(error => next({
       log: error,
@@ -119,7 +119,7 @@ flashcardController.incrementGlobalTotal = async (req, res, next) => {
 // req.body: userID and cardID
 // increment correct in user/cards table 
 flashcardController.correct = async (req, res, next) => {
-  const cardId = req.body.flashcardID;
+  const cardId = req.body.flashCardID;
   const userId = req.body.userID;
   let newCorrect = 1;
   let newEntry = false;
@@ -185,7 +185,7 @@ flashcardController.correct = async (req, res, next) => {
 }
 
 flashcardController.incorrect = async (req, res, next) => {
-  const cardId = req.body.flashcardID;
+  const cardId = req.body.flashCardID;
   const userId = req.body.userID;
   let newIncorrect = 1;
   let newEntry = false;
