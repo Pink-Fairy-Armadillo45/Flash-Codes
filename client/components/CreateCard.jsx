@@ -31,7 +31,7 @@ return(
                 <option value="Unit 2">Unit 2</option>
                 <option value="Unit 3">Unit 3</option>
                 <option value="Unit 4">Unit 4</option>
-                <option value="GOOGLE IT">Unit 4</option>
+                <option value="GOOGLE IT">GOOGLE IT</option>
             </select>
                 <div>
                     Question: <input type="text" id='Question' name='Question' value ={question} onChange={setQuestion} required />

@@ -22,8 +22,8 @@ class ButtonContainer extends Component {
     render() {
         return (
         <div className="responseButton">
+           <Fail handleFailClick={this.props.failCard}/> 
             <Pass handlePassClick={this.props.passCard}/>
-            <Fail handleFailClick={this.props.failCard}/>
         </div>
         );
     };

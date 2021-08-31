@@ -20,12 +20,12 @@ const Cards = props => {
       return <h3>{props.flashCardList[0] ? props.flashCardList[0].answer: "object of the first flashcard"}</h3>
     }
   }
-  
+  const addSpaceToList = props.chosenTopics.map((e) => e+ " ")
   return(
     <div className="cardBox">
-        <h1>{props.chosenTopics.length !== 0  ? props.chosenTopics : "chosen topics"}</h1>
-        <h1>{props.totalCardsAnswered ? 'total cards answered: '+props.totalCardsAnswered : "total cards answered"}</h1>
-        <h1>{props.flashCardList[0] ? props.flashCardList[0].problem: "Title of the first flashcard"}</h1>
+        <h1>{props.chosenTopics.length !== 0  ? addSpaceToList : console.log('empty')}</h1>
+        <h1>{props.totalCardsAnswered ? 'total cards answered: '+props.totalCardsAnswered : console.log('empty')}</h1>
+        <h1>{props.flashCardList[0] ? props.flashCardList[0].problem: console.log('empty')}</h1>
         {revealAnswer()}
         {props.session ===true && props.answerShown ==true ? <ButtonContainer /> : console.log('working')}
   </div>

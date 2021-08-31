@@ -34,12 +34,12 @@ const Topics = props => (
                 if(e.target.checked) return props.selectTopic(e.target.id);
                 else return props.deselectTopic(e.target.id); 
                 }}/> Unit 4
-            <input type='checkbox' id='Unit 4' name='Unit 4' onChange={(e) => {
+            <input type='checkbox' id='GOOGLE IT' name='GOOGLE IT' onChange={(e) => {
                 if(e.target.checked) return props.selectTopic(e.target.id);
                 else return props.deselectTopic(e.target.id); 
                 }}/> GOOGLE IT
                 <div>
-                    <input type='button' value='Begin Review' name='Begin Review' onClick={() => props.submit() } /> 
+                    <input type='button' id='review' value='Begin Review' name='Begin Review' onClick={() => props.submit() } /> 
                 </div>
             </div>
         </div>
