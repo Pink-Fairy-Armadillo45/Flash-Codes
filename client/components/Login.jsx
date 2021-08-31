@@ -46,6 +46,7 @@ return(
         id="Password"
         value={password}
         onChange={setPassword}
+        type="password"
         required/>
       <button id='loginStuff' className="primary" type="submit" onClick={loggingIn}>{signUp === true? "Sign Up" : "Login"}</button>
     </form>

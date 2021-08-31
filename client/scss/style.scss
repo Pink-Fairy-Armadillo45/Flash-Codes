@@ -1,3 +1,4 @@
+
 $redColor: #a10532;
 $pinkColor: #ff6fa9;
 $lightOrange:#ffd0cc;
@@ -5,21 +6,53 @@ $lightBlue: #00b7cc;
 $darkBlue:#005f81; 
 
 
+.app-header {
+  background-color: rgba(22, 24, 151, 0.671);
+  font-family: Copperplate, Papyrus, fantasy;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: rgba(22, 24, 151, 0.671);
+}
 
 body {
     max-width: 100%;
     margin: auto;
+    background-color: rgba(24, 104, 207, 0.801);
+    color: $lightOrange;
+    background-image:url('https://www.squishable.com/mm5/graphics/00000001/opensquish_pink_fairy_armadillo_303018_design.jpg')
   }    
   
   .container{
+    // background-image:url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBl1Rd-qXJdFyxzA7FzFuDiGpUMCZBZ4M3Ng&usqp=CAU');
+  //   background-image:
+  //   linear-gradient(180deg, white 3rem, #F0A4A4 calc(3rem), #F0A4A4 calc(3rem + 2px), transparent 1px),
+  //   repeating-linear-gradient(0deg, transparent, transparent 1.5rem, #DDD 1px, #DDD calc(1.5rem + 1px));
+  // box-shadow: 1px 1px 3px rgba(0,0,0,.25);
+  // height: 10rem;
+  // width: 800px;
+
+  // margin: auto;
+  // position: relative;
+  // top: 50%;
+  // transform: translateY(-50%);
     border: 4px;
     border-style: solid;
     min-width:400px;
+    font-family: 'Righteous', cursive;
     min-height: 600px;
+    background-color: rgb(108, 183, 207);
+    padding: 20px;
+    border-radius: 7px;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15);;
   }
   h1{
     display: flex;
     justify-content: center;
+    
   }
 
   #root{
@@ -30,15 +63,15 @@ body {
     display: flex;
     justify-content: center;
   }
-  button {
+  button, #review {
     display: inline-block;
     border: none;
     padding: .5rem .5rem;
     margin: 0;
     text-decoration: none;
-    background: #00b7cc;
+    background: #a10532;
     color: #ffffff;
-    font-family: sans-serif;
+    font-family: 'Shadows Into Light', cursive;
     font-size: 1rem;
     line-height: 1;
     cursor: pointer;
@@ -48,4 +81,31 @@ body {
     -moz-appearance: none;
     border-radius: 20px;
 }
+.responseButton{
+  display:flex-box;
+  justify-content:space-between ;
+  
+}
+.pass, .fail{
+  display: inline-block;
+  border-radius: 300px;
+  padding:50px;
+  font-size: 25px;
+}
+.passfail{
+  height:200px;
+  width:200px;
+}
+.pass{
+  float:right;
+  
+}
+.passbutton{
+  background-color: rgb(152, 235, 152);
+}
 
+
+button:hover {
+  opacity: 0.5;
+  cursor: pointer;
+}
