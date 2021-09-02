@@ -18,13 +18,13 @@ class ButtonContainer extends Component {
     constructor(props) {
         super(props)
 
-     }
+    }
     render() {
         return (
-        <div className="responseButton">
-           <Fail handleFailClick={this.props.failCard}/> 
-            <Pass handlePassClick={this.props.passCard}/>
-        </div>
+            <div className="responseButton">
+                <Fail handleFailClick={this.props.failCard} />
+                <Pass handlePassClick={this.props.passCard} />
+            </div>
         );
     };
 };
