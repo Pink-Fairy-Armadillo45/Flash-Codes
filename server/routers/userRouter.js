@@ -19,7 +19,7 @@ router.post('/authUser/', userController.verifyUser, (req, res) => {
 })
 
 router.get('/oauth', userController.oauthUser, userController.fetchUser, userController.checkOauthExists, userController.createUser, (req, res) => {
-  return res.status(200).json({ data: true, userID: res.locals.userID })
+  return res.status(200).json({ userID: res.locals.userID })
   // return res.redirect('/');
 })
 

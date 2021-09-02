@@ -46,10 +46,10 @@ const mapDispatchToProps = (dispatch) => ({
   login: (username, password) => {
     dispatch(actions.LOGIN(username, password));
   },
-  oauth: () => {
-    console.log("arrived here")
-    dispatch(actions.OAUTH_LOGIN());
-  },
+  // oauth: () => {
+  //   console.log("arrived here")
+  //   dispatch(actions.OAUTH_LOGIN());
+  // },
   signUp: (username, password) => {
     dispatch(actions.SIGN_UP(username, password));
   },

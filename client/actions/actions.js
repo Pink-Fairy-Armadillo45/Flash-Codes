@@ -16,18 +16,13 @@ export const ANSWERED_CORRECTLY = () => (dispatch, getState) => {
   const userID = getState().flashCodes.userID;
   const flashCardID = getState().flashCodes.flashCardList[0]._id
   console.log('line 18', userID, flashCardID)
-<<<<<<< HEAD
-  axios.post('/cards/answeredCorrect', { userID: userID, flashCardID: flashCardID })
-    .then(({ status }) => {
-=======
   axios.post('/cards/answeredCorrect', {
-      userID: userID,
-      flashCardID: flashCardID
-    })
+    userID: userID,
+    flashCardID: flashCardID
+  })
     .then(({
       status
     }) => {
->>>>>>> dev
       if (status === 200) {
         dispatch({
           type: types.ANSWERED_CORRECTLY,
@@ -42,18 +37,13 @@ export const ANSWERED_CORRECTLY = () => (dispatch, getState) => {
 export const ANSWERED_INCORRECTLY = () => (dispatch, getState) => {
   const userID = getState().flashCodes.userID;
   const flashCardID = getState().flashCodes.flashCardList[0]._id
-<<<<<<< HEAD
-  axios.post('/cards/answeredIncorrect', { userID: userID, flashCardID: flashCardID })
-    .then(({ status }) => {
-=======
   axios.post('/cards/answeredIncorrect', {
-      userID: userID,
-      flashCardID: flashCardID
-    })
+    userID: userID,
+    flashCardID: flashCardID
+  })
     .then(({
       status
     }) => {
->>>>>>> dev
       if (status === 200) {
         dispatch({
           type: types.ANSWERED_INCORRECTLY,
@@ -65,24 +55,18 @@ export const ANSWERED_INCORRECTLY = () => (dispatch, getState) => {
 };
 
 // send post request server side to create card use return from post to change state client side 
-<<<<<<< HEAD
-export const ADD_CREATED_USER_CARD = (problem, answer, category) => (dispatch, getState) => {
-  const username = getState().flashCodes.username;
-  axios.post('/cards/create', { username: username, problem: problem, answer: answer, category: category })
-=======
 export const ADD_CREATED_USER_CARD = (problem, answer, category, is_public) => (dispatch, getState) => {
   const username = getState().flashCodes.username;
   const userID = getState().flashCodes.userID;
   console.log('actions - ADD_CREATED_USER_CARD', is_public);
   axios.post('/cards/create', {
-      username: username,
-      problem: problem,
-      answer: answer,
-      category: category,
-      userID: userID,
-      is_public: is_public
-    })
->>>>>>> dev
+    username: username,
+    problem: problem,
+    answer: answer,
+    category: category,
+    userID: userID,
+    is_public: is_public
+  })
     .then((info) => {
       if (info.status === 200) {
         console.log('the card was added successfully~!')
@@ -98,12 +82,8 @@ export const ADD_CREATED_USER_CARD = (problem, answer, category, is_public) => (
 // get request to retrieve flashcards with an array to retrieve categories 
 export const ADD_FLASH_CARD_LIST = () => (dispatch, getState) => {
   function shuffle(array) {
-<<<<<<< HEAD
-    var currentIndex = array.length, randomIndex;
-=======
     var currentIndex = array.length,
       randomIndex;
->>>>>>> dev
 
     // While there remain elements to shuffle...
     while (currentIndex != 0) {
