@@ -32,7 +32,6 @@ CREATE TABLE public.users_in_cards (
     PRIMARY KEY ("_id")
 );
 
--- ALTER TABLE public.flash_cards ALTER COLUMN public SET DEFAULT FALSE;
 
 INSERT INTO users (_id, username, password ) VALUES
 ('1', 'test',  'test123'),
