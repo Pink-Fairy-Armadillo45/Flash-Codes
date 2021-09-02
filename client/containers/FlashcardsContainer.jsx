@@ -46,10 +46,10 @@ const mapDispatchToProps = (dispatch) => ({
   login: (username, password) => {
     dispatch(actions.LOGIN(username, password));
   },
-  // oauth: () => {
-  //   console.log("arrived here")
-  //   dispatch(actions.OAUTH_LOGIN());
-  // },
+  oauth: () => {
+    console.log("arrived here");
+    dispatch(actions.OAUTH());
+  },
   signUp: (username, password) => {
     dispatch(actions.SIGN_UP(username, password));
   },
@@ -122,7 +122,7 @@ class FlashcardsContainer extends Component {
           {this.checkCreateCard()}
           {/* {this.UserCreatingCard()} */}
           {this.displaySession()}
-          {this.props.userID === null ? <Login login={this.props.login} signUp={this.props.signUp} /> : 'Welcome ' + this.props.username}
+          {this.props.userID === null ? <Login oauth={this.props.oauth} login={this.props.login} signUp={this.props.signUp} /> : 'Welcome ' + this.props.username}
           <Cards
             flashCardList={this.props.flashCardList}
             session={this.props.session}

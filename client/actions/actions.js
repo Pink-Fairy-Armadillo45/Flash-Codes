@@ -183,6 +183,17 @@ export const LOGIN = (username, password) => (dispatch, getState) => {
     });
 };
 
+export const OAUTH = () => (dispatch, getState) => {
+  console.log("in action")
+  axios.get('/user/auth')
+    .then((info) => {
+      console.log(info);
+    })
+    .catch((e) => {
+      alert("Error in Oauth");
+    });
+}
+
 export const SIGN_UP = (username, password) => (dispatch, getState) => {
   axios.post('/user/createUser/', {
     username: username,

@@ -31,7 +31,7 @@ const Login = props => {
     }
   }
 
-  const oauthloggingin = (e) => {
+  const oauth = (e) => {
     e.preventDefault();
     console.log("in oauthloggingin");
     props.oauth();
@@ -57,9 +57,9 @@ const Login = props => {
         <button id='loginStuff' className="primary" type="submit" onClick={loggingIn}>{signUp === true ? "Sign Up" : "Login"}</button>
       </form>
 
-      <form action="">
-        <a href='https://github.com/login/oauth/authorize?client_id=cc2dbad7a4bd537315f1&redirect_uri=http://localhost:8080/user/oauth'>Sign in with Github</a>
-        {/* <button onClick={oauthloggingin}>Sign in with Github</button> */}
+      <form>
+        {/* <a href='https://github.com/login/oauth/authorize?client_id=cc2dbad7a4bd537315f1&redirect_uri=http://localhost:8080/user/oauth'>Sign in with Github</a> */}
+        <a href="/user/auth" >Sign in with Github</a>
       </form>
 
       {signMeUp()}

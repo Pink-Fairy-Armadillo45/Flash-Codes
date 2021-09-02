@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
 const saltRounds = 8;
 const axios = require('axios');
+require('dotenv').config();
 
 // import uuid module to generate unique user ids
 const { v4: uuidv4 } = require('uuid');
@@ -95,6 +96,10 @@ userController.checkUserExists = (req, res, next) => {
 
 // checks for matching entry in user table
 userController.verifyUser = async (req, res, next) => {
+  if (res.locals.username && res.locals.userID) {
+    req.body.username = res.locals.username;
+    req.body.password = res.locals.userID;
+  }
   // deconstruct req.body to get username input and password input
   const username = req.body.username;
   const password = req.body.password;
@@ -113,6 +118,7 @@ userController.verifyUser = async (req, res, next) => {
     const comparison = await bcrypt.compare(password, user.rows[0].password);
     console.log(comparison);
     if (comparison) {
+      res.locals.password = user.rows[0].password;
       res.locals.userID = user.rows[0]._id;
       return next();
     }
@@ -125,28 +131,27 @@ userController.verifyUser = async (req, res, next) => {
 }
 
 
-const clientID = 'cc2dbad7a4bd537315f1';
-const clientSecret = '7a39ee88083b3991906069e2eaf05be2ae3d4f1a';
+const clientID = process.env.CLIENT_ID;
+const clientSecret = process.env.CLIENT_SECRET;
 
 userController.oauthUser = async (req, res, next) => {
-  console.log('make it to oauth route');
-  // try {
-  //   const GithubURL = `https://github.com/login/oauth/access_token?client_id=${clientID}&client_secret=${clientSecret}&code=${requestToken}`;
-  //   res.redirect(GithubURL);
-  // } catch (err) {
-  //   console.log(err);
-  // }
+  console.log('make it to oauth redirect route');
   const requestToken = req.query.code;
   console.log('request token : ', requestToken);
-  const response =
-    await axios.post(`https://github.com/login/oauth/access_token?client_id=${clientID}&client_secret=${clientSecret}&code=${requestToken}`)
-  console.log('response: ', response.data);
-  const accessTokenArr = response.data.split(/[ &]+/);
-  const accessToken = accessTokenArr[0].substring(13);
-  console.log('accessToken: ', accessToken);
-  res.locals.token = accessToken;
-  console.log('finished it!')
-  return next();
+  try {
+    const response =
+      await axios.post(`https://github.com/login/oauth/access_token?client_id=${clientID}&client_secret=${clientSecret}&code=${requestToken}`)
+    // console.log('response: ', response.data);
+    const accessTokenArr = response.data.split(/[ &]+/);
+    const accessToken = accessTokenArr[0].substring(13);
+    console.log('accessToken: ', accessToken);
+    res.locals.token = accessToken;
+    console.log('finished it!')
+    return next();
+  } catch (err) {
+    console.log('error in oauthUser', err);
+  }
+
 }
 
 userController.fetchUser = async (req, res, next) => {
