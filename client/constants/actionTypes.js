@@ -17,7 +17,8 @@ export const ADD_TO_TOPICS_LIST = 'ADD_TO_TOPICS_LIST ';
 export const REMOVE_ONE_TOPICS_LIST = 'REMOVE_ONE_TOPICS_LIST ';
 export const REVEAL_ANSWER = 'REVEAL_ANSWER ';
 export const LOGIN = 'LOGIN';
+export const OAUTH_LOGIN = 'OAUTH_LOGIN';
 export const SIGN_UP = 'SIGN_UP';
 export const CREATE_CARD = 'CREATE-CARD';
-export const RESET_SESSION = 'RESET_SESSION ';
+export const RESET_SESSION = 'RESET_SESSION';
 

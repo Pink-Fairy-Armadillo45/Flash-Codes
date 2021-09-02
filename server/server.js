@@ -8,6 +8,9 @@ const cardsRouter = require('./routers/flashcardRouter.js');
 const userRouter = require('./routers/userRouter.js');
 require('dotenv').config();
 
+// const clientId = cc2dbad7a4bd537315f1;
+// const clientSecret = 7a39ee88083b3991906069e2eaf05be2ae3d4f1a;
+
 // handle parsing body and url
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -18,6 +21,7 @@ app.use('/user/', userRouter);
 
 // serve static pages
 app.use(express.static(path.resolve(__dirname, '../client')));
+
 
 // 404 handler
 app.use((req, res) => res.status(404).send('Error 404: Page not found (what did u do smh)'));

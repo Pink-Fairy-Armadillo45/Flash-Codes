@@ -1,25 +1,25 @@
 const flashcardController = {};
-const db = require('../db/db'); 
+const db = require('../db/db');
 const { v4: uuidv4 } = require('uuid');
 
 
 // middleware to get all cards 
 flashcardController.getAllCards = (req, res, next) => {
-    const query = `
+  const query = `
         SELECT *
         FROM flash_cards;`;
-    db.query(query)
-        .then(response => {
-            res.locals.cards = response.rows;
-            return next();
-        })
-        .catch(error => {
-            console.log('ERROR IN getAllCards: ', error);
-            return next({
-                log: error,
-                message: {err: 'Error accessing database - see server logs'}
-            })
-        })
+  db.query(query)
+    .then(response => {
+      res.locals.cards = response.rows;
+      return next();
+    })
+    .catch(error => {
+      console.log('ERROR IN getAllCards: ', error);
+      return next({
+        log: error,
+        message: { err: 'Error accessing database - see server logs' }
+      })
+    })
 };
 
 // middleware to get cards by category
@@ -36,48 +36,48 @@ flashcardController.getCardsByCategory = (req, res, next) => {
    FROM flash_cards
    `
   //  console.log(body, body.length === 0);
-   //if no category specified, return all flashcards
-   if(body.length === 0){
-      // console.log(body, body.length === 0);
-     query += ';';
+  //if no category specified, return all flashcards
+  if (body.length === 0) {
+    // console.log(body, body.length === 0);
+    query += ';';
     db.query(query)
-    .then(response => {
+      .then(response => {
         res.locals.cards = response.rows;
         return next();
-    })
-    .catch(error => {
+      })
+      .catch(error => {
         console.log('ERROR IN getCardsByCategory(get all categories): ', error);
         return next({
-            log: error,
-            message: {err: 'Error accessing database - see server logs'}
-        })
-    })
-   }
-   // categories selected: return flashcards where category matches
-   else {
-     let categorySelect = 'WHERE ';
-     body.forEach((category, index) => {
-       if(index === body.length - 1){
-         categorySelect = categorySelect.concat(`category=$${index+1};`);
-        } else {
-          categorySelect = categorySelect.concat(`category=$${index+1} OR `);
-        }
-      });
-      query = query.concat(categorySelect);
-      // console.log('has category', query);
-     db.query(query, body)
-     .then(response => {
-       res.locals.cards = response.rows;
-       return next();
-     })
-     .catch(error => {
-       console.log('ERROR in getCardsByCategory(category selected): ', error);
-       return next({
           log: error,
-          message: {err: 'Error accessing database - see server logs'}
+          message: { err: 'Error accessing database - see server logs' }
         })
       })
-   };   
+  }
+  // categories selected: return flashcards where category matches
+  else {
+    let categorySelect = 'WHERE ';
+    body.forEach((category, index) => {
+      if (index === body.length - 1) {
+        categorySelect = categorySelect.concat(`category=$${index + 1};`);
+      } else {
+        categorySelect = categorySelect.concat(`category=$${index + 1} OR `);
+      }
+    });
+    query = query.concat(categorySelect);
+    // console.log('has category', query);
+    db.query(query, body)
+      .then(response => {
+        res.locals.cards = response.rows;
+        return next();
+      })
+      .catch(error => {
+        console.log('ERROR in getCardsByCategory(category selected): ', error);
+        return next({
+          log: error,
+          message: { err: 'Error accessing database - see server logs' }
+        })
+      })
+  };
 };
 
 // req.body: userID and flashcardID
@@ -94,7 +94,7 @@ flashcardController.incrementGlobalTotal = async (req, res, next) => {
   await db.query(query1, [flashcardid])
     .then(response => {
       const currentGlobalTotal = response.rows[0].global_total;
-      newGlobalTotal = Number(currentGlobalTotal)+1;
+      newGlobalTotal = Number(currentGlobalTotal) + 1;
     })
     .catch(error => next({
       log: error,
@@ -133,36 +133,36 @@ flashcardController.correct = async (req, res, next) => {
   WHERE uc.user_id = $1 AND uc.flashcard_id = $2
   `;
   await db.query(query, [userId, cardId])
-  .then( (response) => {
-    // console.log(response.rows);
-    if(response.rows.length === 0){
-      newEntry = true;
-    }
-    // increment correct_num
-    else {
-      newEntry = false;
-      newCorrect = Number(response.rows[0].correct_num) + 1;
-    }
-  })
-  .catch(err => {
-    console.log('error in doublejoin', err)
-    return next(err);
-  })
+    .then((response) => {
+      // console.log(response.rows);
+      if (response.rows.length === 0) {
+        newEntry = true;
+      }
+      // increment correct_num
+      else {
+        newEntry = false;
+        newCorrect = Number(response.rows[0].correct_num) + 1;
+      }
+    })
+    .catch(err => {
+      console.log('error in doublejoin', err)
+      return next(err);
+    })
 
-  if(newEntry){
+  if (newEntry) {
     const createQuery = `
     INSERT INTO users_in_cards
     VALUES ($1, $2, $3, 1, 0);
     `
     const id = uuidv4();
     await db.query(createQuery, [id, userId, cardId])
-    .then((response) => {
-      return next();
-    })
-    .catch(error => {
-      console.log('Error in creating new row in user/cards table');
-      return next(error);
-    })
+      .then((response) => {
+        return next();
+      })
+      .catch(error => {
+        console.log('Error in creating new row in user/cards table');
+        return next(error);
+      })
   }
   // query update user/cards table with incremented correct num
   else {
@@ -171,15 +171,15 @@ flashcardController.correct = async (req, res, next) => {
       SET correct_num = $1
       WHERE user_id = $2 AND flashcard_id = $3
     `;
-  
+
     await db.query(updateQuery, [newCorrect, userId, cardId])
-    .then((response) => {
-      return next();
-    })
-    .catch(error => {
-      console.log('Error in update existing correct num');
-      return next(error);
-    })
+      .then((response) => {
+        return next();
+      })
+      .catch(error => {
+        console.log('Error in update existing correct num');
+        return next(error);
+      })
   }
 
 }
@@ -199,36 +199,36 @@ flashcardController.incorrect = async (req, res, next) => {
   WHERE uc.user_id = $1 AND uc.flashcard_id = $2
   `;
   await db.query(query, [userId, cardId])
-  .then( (response) => {
-    // console.log(response.rows);
-    if(response.rows.length === 0){
-      newEntry = true;
-    }
-    // increment correct_num
-    else {
-      newEntry = false;
-      newIncorrect = Number(response.rows[0].incorrect_num) + 1;
-    }
-  })
-  .catch(err => {
-    console.log('error in doublejoin', err)
-    return next(err);
-  })
+    .then((response) => {
+      // console.log(response.rows);
+      if (response.rows.length === 0) {
+        newEntry = true;
+      }
+      // increment correct_num
+      else {
+        newEntry = false;
+        newIncorrect = Number(response.rows[0].incorrect_num) + 1;
+      }
+    })
+    .catch(err => {
+      console.log('error in doublejoin', err)
+      return next(err);
+    })
 
-  if(newEntry){
+  if (newEntry) {
     const createQuery = `
     INSERT INTO users_in_cards
     VALUES ($1, $2, $3, 1, 0);
     `
     const id = uuidv4();
     await db.query(createQuery, [id, userId, cardId])
-    .then((response) => {
-      return next();
-    })
-    .catch(error => {
-      console.log('Error in creating new row in user/cards table');
-      return next(error);
-    })
+      .then((response) => {
+        return next();
+      })
+      .catch(error => {
+        console.log('Error in creating new row in user/cards table');
+        return next(error);
+      })
   }
   // query update user/cards table with incremented correct num
   else {
@@ -237,15 +237,15 @@ flashcardController.incorrect = async (req, res, next) => {
       SET incorrect_num = $1
       WHERE user_id = $2 AND flashcard_id = $3
     `;
-  
+
     await db.query(updateQuery, [newIncorrect, userId, cardId])
-    .then((response) => {
-      return next();
-    })
-    .catch(error => {
-      console.log('Error in update existing correct num');
-      return next(error);
-    })
+      .then((response) => {
+        return next();
+      })
+      .catch(error => {
+        console.log('Error in update existing correct num');
+        return next(error);
+      })
   }
 }
 
@@ -261,14 +261,14 @@ flashcardController.createCard = (req, res, next) => {
   VALUES ($1, $2, $3, $4, $5, $6);
   `;
   db.query(query, [id, problem, answer, '0', category, username])
-  .then((response) => {
-    res.locals.newCard = response.rows[0];
-    return next();
-  })
-  .catch((error) => {
-    console.log('Error in creating card:', error);
-    return next(error);
-  })
+    .then((response) => {
+      res.locals.newCard = response.rows[0];
+      return next();
+    })
+    .catch((error) => {
+      console.log('Error in creating card:', error);
+      return next(error);
+    })
 
 }
 module.exports = flashcardController;
