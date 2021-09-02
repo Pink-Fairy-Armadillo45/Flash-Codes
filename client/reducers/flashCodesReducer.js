@@ -91,6 +91,16 @@ const flashCodesReducer = (state = initialState, action) => {
       }
     }
 
+    case types.ADD_PUBLIC_FLASH_CARD_LIST: {
+      const newFlashCards = action.payload
+      const newSession = true
+      return {
+        ...state,
+        flashCardList: newFlashCards,
+        session: newSession
+      }
+    }
+
 
     //add a topic to the chosen topics array
     case types.ADD_TO_TOPICS_LIST: {

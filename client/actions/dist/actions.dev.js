@@ -5,7 +5,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.RESET_SESSION = exports.CREATE_CARD = exports.REVEAL_ANSWER = exports.REMOVE_ONE_TOPICS_LIST = exports.ADD_TO_TOPICS_LIST = exports.SIGN_UP = exports.LOGIN = exports.ADD_FLASH_CARD_LIST = exports.ADD_CREATED_USER_CARD = exports.ANSWERED_INCORRECTLY = exports.ANSWERED_CORRECTLY = void 0;
+exports.RESET_SESSION = exports.CREATE_CARD = exports.REVEAL_ANSWER = exports.REMOVE_ONE_TOPICS_LIST = exports.ADD_TO_TOPICS_LIST = exports.SIGN_UP = exports.LOGIN = exports.ADD_PUBLIC_FLASH_CARD_LIST = exports.ADD_FLASH_CARD_LIST = exports.ADD_CREATED_USER_CARD = exports.ANSWERED_INCORRECTLY = exports.ANSWERED_CORRECTLY = void 0;
 
 var _axios = _interopRequireDefault(require("axios"));
 
@@ -80,17 +80,19 @@ var ANSWERED_INCORRECTLY = function ANSWERED_INCORRECTLY() {
 
 exports.ANSWERED_INCORRECTLY = ANSWERED_INCORRECTLY;
 
-var ADD_CREATED_USER_CARD = function ADD_CREATED_USER_CARD(problem, answer, category) {
+var ADD_CREATED_USER_CARD = function ADD_CREATED_USER_CARD(problem, answer, category, is_public) {
   return function (dispatch, getState) {
     var username = getState().flashCodes.username;
     var userID = getState().flashCodes.userID;
+    console.log('actions - ADD_CREATED_USER_CARD', is_public);
 
     _axios["default"].post('/cards/create', {
       username: username,
       problem: problem,
       answer: answer,
       category: category,
-      userID: userID
+      userID: userID,
+      is_public: is_public
     }).then(function (info) {
       if (info.status === 200) {
         console.log('the card was added successfully~!');
@@ -127,8 +129,7 @@ var ADD_FLASH_CARD_LIST = function ADD_FLASH_CARD_LIST() {
 
 
     var chosenTopics = getState().flashCodes.chosenTopics;
-    var userID = getState().flashCodes.userID;
-    console.log('is something getting sent', chosenTopics); //query parameters.... or req.body
+    var userID = getState().flashCodes.userID; //query parameters.... or req.body
 
     _axios["default"].post('/cards/category/', {
       categories: chosenTopics,
@@ -148,6 +149,46 @@ var ADD_FLASH_CARD_LIST = function ADD_FLASH_CARD_LIST() {
 };
 
 exports.ADD_FLASH_CARD_LIST = ADD_FLASH_CARD_LIST;
+
+var ADD_PUBLIC_FLASH_CARD_LIST = function ADD_PUBLIC_FLASH_CARD_LIST() {
+  return function (dispatch, getState) {
+    function shuffle(array) {
+      var currentIndex = array.length,
+          randomIndex; // While there remain elements to shuffle...
+
+      while (currentIndex != 0) {
+        // Pick a remaining element...
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--; // And swap it with the current element.
+
+        var _ref4 = [array[randomIndex], array[currentIndex]];
+        array[currentIndex] = _ref4[0];
+        array[randomIndex] = _ref4[1];
+      }
+
+      return array;
+    } //in the future will also code to include a users ID to get their information as well
+
+
+    var chosenTopics = getState().flashCodes.chosenTopics;
+    var userID = getState().flashCodes.userID; //query parameters.... or req.body
+
+    _axios["default"].post('/cards/publicCards/', {
+      categories: chosenTopics,
+      userID: userID
+    }).then(function (info) {
+      if (info.status === 200) {
+        var newArray = shuffle(info.data);
+        dispatch({
+          type: types.ADD_PUBLIC_FLASH_CARD_LIST,
+          payload: newArray
+        });
+      }
+    })["catch"](console.error);
+  };
+};
+
+exports.ADD_PUBLIC_FLASH_CARD_LIST = ADD_PUBLIC_FLASH_CARD_LIST;
 
 var LOGIN = function LOGIN(username, password) {
   return function (dispatch, getState) {

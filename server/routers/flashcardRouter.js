@@ -2,22 +2,16 @@ const express = require('express');
 const flashcardController = require('../controllers/flashcardController');
 const router = express.Router();
 
-// get request to retrieve user's cards from the flashcard database
-// router.get('/getUserCards/', flashcardController.getUserCards, (req, res) => {
-//   return res.status(200).json(res.locals.userCards);
-// })
 
-// // get request to retrieve all cards from flashcard database
-// router.get('/getCards/', flashcardController.getAllCards, (req, res) => {
-//   return res.status(200).json(res.locals.cards);
-// })
-
-// get request for all cards of a multiple category
-
+// post request for all of user's cards of multiple categories
 router.post('/category/', flashcardController.getUserCardsByCategory, (req, res) => {
   return res.status(200).json(res.locals.cards);
 })
 
+// post request for all of the public + user cards of multiple categories
+router.post('/publicCards', flashcardController.getAllPublicCards, (req, res) => {
+  return res.status(200).json(res.locals.cards);
+})
 
 // req body: userid and cardid 
 // if answered correctly -> increment global total(query for flashcard -> increment global total -> insert into db), 

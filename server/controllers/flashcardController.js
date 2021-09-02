@@ -5,26 +5,69 @@ const {
 } = require('uuid');
 
 // middleware to get all cards 
-// flashcardController.getAllCards = (req, res, next) => {
-//   const query = `
-//         SELECT *
-//         FROM flash_cards;`;
-//   db.query(query)
-//     .then(response => {
-//       res.locals.cards = response.rows;
-//       return next();
-//     })
-//     .catch(error => {
-//       console.log('ERROR IN getAllCards: ', error);
-//       return next({
-//         log: error,
-//         message: {
-//           err: 'Error accessing database - see server logs'
-//         }
-//       })
-//     })
-// };
+flashcardController.getAllPublicCards = (req, res, next) => {
+  const body = req.body.categories;
+  let query = `
+        SELECT *
+        FROM flash_cards
+        WHERE flash_cards.is_public = 'true' 
+        `;
+  // copied from getUserCardsByCategory
+  const userID = req.body.userID;
 
+  //if no category specified, return all flashcards belonging to the user or if are public
+  if (body.length === 0) {
+    
+    // console.log(body, body.length === 0);
+    query += 'OR flash_cards.created_by_id=$1;';
+    // console.log(query);
+    db.query(query, [userID])
+      .then(response => {
+        res.locals.cards = response.rows;
+        console.log('getAllPublicCards - no categories selected - res.locals.cards: ', res.locals.cards);
+        return next();
+      })
+      .catch(error => {
+        console.log('ERROR IN getAllPublicCards(get all public categories): ', error);
+        return next({
+          log: error,
+          message: {
+            err: 'Error accessing database - see server logs'
+          }
+        })
+      })
+  }
+  // categories selected: return flashcards where category matches
+  else {
+    body.push(req.body.userID);
+
+    let categorySelect = 'OR ';
+    for (let i = 0; i < body.length - 1; i++) {
+      if (i === body.length - 2) {
+        categorySelect = categorySelect.concat(`category=$${i+1} AND flash_cards.created_by_id=$${body.length};`);
+      } else {
+        categorySelect = categorySelect.concat(`category=$${i+1} AND flash_cards.created_by_id=$${body.length} OR `);
+      }
+    }
+
+    query = query.concat(categorySelect);
+
+    db.query(query, body)
+      .then(response => {
+        res.locals.cards = response.rows;
+        return next();
+      })
+      .catch(error => {
+        // console.log('ERROR in getAllPublicCards(category selected): ', error);
+        return next({
+          log: error,
+          message: {
+            err: 'Error accessing database - see server logs'
+          }
+        })
+      })
+  };
+};
 // middleware to get cards by category
 // Request data: request body will have multiple categories 
 // TODO: create logic to generate query string based on number of categories sent back
@@ -39,10 +82,7 @@ flashcardController.getUserCardsByCategory = (req, res, next) => {
    FROM flash_cards 
    `
   const userID = req.body.userID;
-  //  console.log(body, body.length === 0);
-  //if no category specified, return all flashcards
   if (body.length === 0) {
-    // console.log(body, body.length === 0);
     query += 'WHERE flash_cards.created_by_id=$1;';
     db.query(query, [userID])
       .then(response => {
@@ -62,44 +102,24 @@ flashcardController.getUserCardsByCategory = (req, res, next) => {
   }
   // categories selected: return flashcards where category matches
   else {
-    console.log('getCardsByCategory - userID', req.body.userID);
     body.push(req.body.userID);
-    console.log('body', body);
     let categorySelect = 'WHERE ';
     for (let i = 0; i < body.length - 1; i++) {
-      console.log('i', i);
-      console.log('body.length', body.length);
       if (i === body.length - 2) {
-        console.log('hello world')
         categorySelect = categorySelect.concat(`category=$${i+1} AND flash_cards.created_by_id=$${body.length};`);
-        console.log("category select in flashcardcontroller: ", categorySelect);
       } else {
         categorySelect = categorySelect.concat(`category=$${i+1} AND flash_cards.created_by_id=$${body.length} OR `);
       }
     }
-    // body.forEach((category, index, array) => {
-    //   if (index === body.length - 1) {
-    //     categorySelect = categorySelect.concat(`category=$${index+1} AND flash_cards.created_by_id=$${array.length-1};`);
-    //   } else {
-    //     categorySelect = categorySelect.concat(`category=$${index+1} OR `);
-    //   }
-    // });
-
+  
     query = query.concat(categorySelect);
 
-    // [category, category2, userID]
-    // if we push userID into body array, userID will always live at index = body.length - 1
-
-    // console.log('has category', query);
-    console.log('query', query);
     db.query(query, body)
       .then(response => {
         res.locals.cards = response.rows;
-        console.log('getCardsByCategory - categories selected - res.locals.cards: ', res.locals.cards);
         return next();
       })
       .catch(error => {
-        console.log('ERROR in getCardsByCategory(category selected): ', error);
         return next({
           log: error,
           message: {
@@ -286,12 +306,13 @@ flashcardController.createCard = (req, res, next) => {
   const id = uuidv4();
   const category = req.body.category;
   const userID = req.body.userID;
-
+  const is_public = req.body.is_public;
+  console.log("flashcardcontroller ", is_public);
   const query = `
-  INSERT INTO flash_cards (_id, problem, answer, global_total, category, created_by, created_by_id)
-  VALUES ($1, $2, $3, $4, $5, $6, $7);
+  INSERT INTO flash_cards (_id, problem, answer, global_total, category, created_by, is_public, created_by_id)
+  VALUES ($1, $2, $3, $4, $5, $6, $7, $8);
   `;
-  db.query(query, [id, problem, answer, '0', category, username, userID])
+  db.query(query, [id, problem, answer, '0', category, username, is_public, userID])
     .then((response) => {
       res.locals.newCard = response.rows[0];
       return next();

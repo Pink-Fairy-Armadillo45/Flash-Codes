@@ -37,8 +37,11 @@ const mapDispatchToProps = (dispatch) => ({
   submit: () => {
     dispatch(actions.ADD_FLASH_CARD_LIST());
   },
-  createUserCard: (question, answer, topic) => {
-    dispatch(actions.ADD_CREATED_USER_CARD(question, answer, topic));
+  submitPublic: () => {
+    dispatch(actions.ADD_PUBLIC_FLASH_CARD_LIST());
+  },
+  createUserCard: (question, answer, topic, is_public) => {
+    dispatch(actions.ADD_CREATED_USER_CARD(question, answer, topic, is_public));
   },
   login: (username, password) => {
     dispatch(actions.LOGIN(username, password));
@@ -69,6 +72,7 @@ class FlashcardsContainer extends Component {
           selectTopic={this.props.selectTopic}
           deselectTopic={this.props.deselectTopic}
           submit={this.props.submit}
+          submitPublic={this.props.submitPublic}
           userID={this.props.userID}
         />
       )
@@ -87,20 +91,6 @@ class FlashcardsContainer extends Component {
     }
 
   }
-
-  // UserCreatingCard(){
-  //   if(this.props.session === false && this.props.userID !== null){
-  //     return (
-  //         <CreateCard 
-  //         createUserCard={this.props.createUserCard}
-  //         />
-  //     )
-  //   }else{
-  //     return(
-  //             <div>New Card Being Created</div>
-  //     )
-  //   }
-  // }
 
   checkCreateCard() {
     if (this.props.session === false && this.props.userID !== null) {

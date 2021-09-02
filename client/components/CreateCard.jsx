@@ -19,7 +19,8 @@ const CreateCard = props => {
   const sendNewcard = (userID) => {
     const topic = document.querySelector('#topics').value
     console.log('check topic', topic)
-    props.createUserCard(question, answer, topic, userID)
+    const is_public = document.querySelector('#is_public').value;
+    props.createUserCard(question, answer, topic, is_public, userID)
   }
 
   return (
@@ -32,6 +33,11 @@ const CreateCard = props => {
             <option value="Unit 3">Unit 3</option>
             <option value="Unit 4">Unit 4</option>
             <option value="GOOGLE IT">GOOGLE IT</option>
+          </select>
+          Make this a public flashcard:
+          <select name="public" id="is_public">
+            <option value="false" defaultValue>False</option>
+            <option value="true">True</option>
           </select>
           <div>
             Question: <input type="text" id='Question' name='Question' value={question} onChange={setQuestion} required />
