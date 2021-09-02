@@ -20,5 +20,5 @@ export const LOGIN = 'LOGIN';
 export const OAUTH_LOGIN = 'OAUTH_LOGIN';
 export const SIGN_UP = 'SIGN_UP';
 export const CREATE_CARD = 'CREATE-CARD';
-export const RESET_SESSION = 'RESET_SESSION';
-
+export const RESET_SESSION = 'RESET_SESSION ';
+export const ADD_PUBLIC_FLASH_CARD_LIST = 'ADD_PUBLIC_FLASH_CARD_LIST';

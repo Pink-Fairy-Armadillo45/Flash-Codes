@@ -16,8 +16,18 @@ export const ANSWERED_CORRECTLY = () => (dispatch, getState) => {
   const userID = getState().flashCodes.userID;
   const flashCardID = getState().flashCodes.flashCardList[0]._id
   console.log('line 18', userID, flashCardID)
+<<<<<<< HEAD
   axios.post('/cards/answeredCorrect', { userID: userID, flashCardID: flashCardID })
     .then(({ status }) => {
+=======
+  axios.post('/cards/answeredCorrect', {
+      userID: userID,
+      flashCardID: flashCardID
+    })
+    .then(({
+      status
+    }) => {
+>>>>>>> dev
       if (status === 200) {
         dispatch({
           type: types.ANSWERED_CORRECTLY,
@@ -32,8 +42,18 @@ export const ANSWERED_CORRECTLY = () => (dispatch, getState) => {
 export const ANSWERED_INCORRECTLY = () => (dispatch, getState) => {
   const userID = getState().flashCodes.userID;
   const flashCardID = getState().flashCodes.flashCardList[0]._id
+<<<<<<< HEAD
   axios.post('/cards/answeredIncorrect', { userID: userID, flashCardID: flashCardID })
     .then(({ status }) => {
+=======
+  axios.post('/cards/answeredIncorrect', {
+      userID: userID,
+      flashCardID: flashCardID
+    })
+    .then(({
+      status
+    }) => {
+>>>>>>> dev
       if (status === 200) {
         dispatch({
           type: types.ANSWERED_INCORRECTLY,
@@ -45,9 +65,24 @@ export const ANSWERED_INCORRECTLY = () => (dispatch, getState) => {
 };
 
 // send post request server side to create card use return from post to change state client side 
+<<<<<<< HEAD
 export const ADD_CREATED_USER_CARD = (problem, answer, category) => (dispatch, getState) => {
   const username = getState().flashCodes.username;
   axios.post('/cards/create', { username: username, problem: problem, answer: answer, category: category })
+=======
+export const ADD_CREATED_USER_CARD = (problem, answer, category, is_public) => (dispatch, getState) => {
+  const username = getState().flashCodes.username;
+  const userID = getState().flashCodes.userID;
+  console.log('actions - ADD_CREATED_USER_CARD', is_public);
+  axios.post('/cards/create', {
+      username: username,
+      problem: problem,
+      answer: answer,
+      category: category,
+      userID: userID,
+      is_public: is_public
+    })
+>>>>>>> dev
     .then((info) => {
       if (info.status === 200) {
         console.log('the card was added successfully~!')
@@ -63,7 +98,12 @@ export const ADD_CREATED_USER_CARD = (problem, answer, category) => (dispatch, g
 // get request to retrieve flashcards with an array to retrieve categories 
 export const ADD_FLASH_CARD_LIST = () => (dispatch, getState) => {
   function shuffle(array) {
+<<<<<<< HEAD
     var currentIndex = array.length, randomIndex;
+=======
+    var currentIndex = array.length,
+      randomIndex;
+>>>>>>> dev
 
     // While there remain elements to shuffle...
     while (currentIndex != 0) {
@@ -74,16 +114,20 @@ export const ADD_FLASH_CARD_LIST = () => (dispatch, getState) => {
 
       // And swap it with the current element.
       [array[currentIndex], array[randomIndex]] = [
-        array[randomIndex], array[currentIndex]];
+        array[randomIndex], array[currentIndex]
+      ];
     }
 
     return array;
   }
   //in the future will also code to include a users ID to get their information as well
   const chosenTopics = getState().flashCodes.chosenTopics;
-  console.log('is something getting sent', chosenTopics)
+  const userID = getState().flashCodes.userID;
   //query parameters.... or req.body
-  axios.post('/cards/category/', { categories: chosenTopics })
+  axios.post('/cards/category/', {
+    categories: chosenTopics,
+    userID
+  })
     .then((info) => {
       console.log(info.data)
       if (info.status === 200) {
@@ -97,16 +141,60 @@ export const ADD_FLASH_CARD_LIST = () => (dispatch, getState) => {
     .catch(console.error);
 };
 
-export const LOGIN = (username, password) => (dispatch, getState) => {
-  console.log('actions.js: ', password);
-  axios.post('/user/authUser/', { username: username, password: password })
+export const ADD_PUBLIC_FLASH_CARD_LIST = () => (dispatch, getState) => {
+  function shuffle(array) {
+    var currentIndex = array.length,
+      randomIndex;
+
+    // While there remain elements to shuffle...
+    while (currentIndex != 0) {
+
+      // Pick a remaining element...
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+
+      // And swap it with the current element.
+      [array[currentIndex], array[randomIndex]] = [
+        array[randomIndex], array[currentIndex]
+      ];
+    }
+
+    return array;
+  }
+  //in the future will also code to include a users ID to get their information as well
+  const chosenTopics = getState().flashCodes.chosenTopics;
+  const userID = getState().flashCodes.userID;
+  //query parameters.... or req.body
+  axios.post('/cards/publicCards/', {
+    categories: chosenTopics,
+    userID
+  })
     .then((info) => {
-      console.log('info:', info)
-      console.log('info.data :', info.data)
+      if (info.status === 200) {
+        const newArray = shuffle(info.data)
+        dispatch({
+          type: types.ADD_PUBLIC_FLASH_CARD_LIST,
+          payload: newArray
+        });
+      }
+    })
+    .catch(console.error);
+};
+
+export const LOGIN = (username, password) => (dispatch, getState) => {
+  axios.post('/user/authUser/', {
+    username: username,
+    password: password
+  })
+    .then((info) => {
+      console.log(info.data)
       if (info.status === 200) {
         dispatch({
           type: types.LOGIN,
-          payload: { username: username, userID: info.data.userID }
+          payload: {
+            username: username,
+            userID: info.data.userID
+          }
         });
       }
     })
@@ -115,44 +203,20 @@ export const LOGIN = (username, password) => (dispatch, getState) => {
     });
 };
 
-export const OAUTH_LOGIN = () => (dispatch, getState) => {
-  // console.log('actions.js: ', password);
-  console.log("we are in action!")
-  // axios.post('https://github.com/login/oauth/authorize?client_id=cc2dbad7a4bd537315f1&redirect_uri=http://localhost:8080/user/oauth',
-  //   {
-  //     headers: {
-  //       'Accept': 'application/json',
-  //       'X-OAuth-Scopes': 'user',
-  //       'X-Accepted-OAuth-Scopes': 'user'
-  //     }
-  //   })
-  //   .then((user) => {
-  //     console.log(user)
-  //   })
-  axios.post('/user/oauth/')
-    .then((info) => {
-      console.log('oauth info:', info)
-      console.log('oauth info.data :', info.data)
-      if (info.status === 200) {
-        dispatch({
-          type: types.LOGIN,
-          payload: { username: "Freya", userID: info.data.userID }
-        });
-      }
-    })
-    .catch((err) => {
-      console.log('error: ', err)
-    });
-};
-
 export const SIGN_UP = (username, password) => (dispatch, getState) => {
-  axios.post('/user/createUser/', { username: username, password: password })
+  axios.post('/user/createUser/', {
+    username: username,
+    password: password
+  })
     .then((info) => {
       console.log(info.data)
       if (info.status === 200 && info.data.data === true) {
         dispatch({
           type: types.LOGIN,
-          payload: { username: username, userID: info.data.userID }
+          payload: {
+            username: username,
+            userID: info.data.userID
+          }
         });
       }
     })
@@ -183,4 +247,3 @@ export const CREATE_CARD = () => ({
 export const RESET_SESSION = () => ({
   type: types.RESET_SESSION,
 })
-

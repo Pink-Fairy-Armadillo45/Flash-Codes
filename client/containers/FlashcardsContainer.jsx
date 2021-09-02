@@ -37,8 +37,11 @@ const mapDispatchToProps = (dispatch) => ({
   submit: () => {
     dispatch(actions.ADD_FLASH_CARD_LIST());
   },
-  createUserCard: (question, answer, topic) => {
-    dispatch(actions.ADD_CREATED_USER_CARD(question, answer, topic));
+  submitPublic: () => {
+    dispatch(actions.ADD_PUBLIC_FLASH_CARD_LIST());
+  },
+  createUserCard: (question, answer, topic, is_public) => {
+    dispatch(actions.ADD_CREATED_USER_CARD(question, answer, topic, is_public));
   },
   login: (username, password) => {
     dispatch(actions.LOGIN(username, password));
@@ -73,9 +76,14 @@ class FlashcardsContainer extends Component {
           selectTopic={this.props.selectTopic}
           deselectTopic={this.props.deselectTopic}
           submit={this.props.submit}
+          submitPublic={this.props.submitPublic}
+          userID={this.props.userID}
         />
       )
     } else if (this.props.flashCardList.length === 0 && this.props.session === true) {
+      // return completion modal component
+
+
       alert(`You finished your review! You answered ${this.props.answeredRight} out of ${this.props.totalCardsAnswered} correctly. Would you like to review again?`)
       this.props.selectTopic('all')
       this.props.resetSession()
@@ -85,21 +93,8 @@ class FlashcardsContainer extends Component {
         <div>Session in progress.</div>
       )
     }
-  }
 
-  // UserCreatingCard() {
-  //   if (this.props.session === false && this.props.userID !== null) {
-  //     return (
-  //       <CreateCard
-  //         createUserCard={this.props.createUserCard}
-  //       />
-  //     )
-  //   } else {
-  //     return (
-  //       <div>New Card Being Created</div>
-  //     )
-  //   }
-  // }
+  }
 
   checkCreateCard() {
     if (this.props.session === false && this.props.userID !== null) {
@@ -107,6 +102,7 @@ class FlashcardsContainer extends Component {
         //console.log(this.)
         return (<CreateCard
           createUserCard={this.props.createUserCard}
+          userID={this.props.userID}
         />)
       } else {
         return (<button id='loginStuff' className="primary" type="submit" onClick={() => { this.props.createACard() }}>Create a new Flashcard</button>)
@@ -126,7 +122,7 @@ class FlashcardsContainer extends Component {
           {this.checkCreateCard()}
           {/* {this.UserCreatingCard()} */}
           {this.displaySession()}
-          {this.props.userID === null ? <Login oauth={this.props.oauth} login={this.props.login} signUp={this.props.signUp} /> : 'Welcome ' + this.props.username}
+          {this.props.userID === null ? <Login login={this.props.login} signUp={this.props.signUp} /> : 'Welcome ' + this.props.username}
           <Cards
             flashCardList={this.props.flashCardList}
             session={this.props.session}
