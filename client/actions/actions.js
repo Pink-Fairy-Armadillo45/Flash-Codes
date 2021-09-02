@@ -55,15 +55,17 @@ export const ANSWERED_INCORRECTLY = () => (dispatch, getState) => {
 };
 
 // send post request server side to create card use return from post to change state client side 
-export const ADD_CREATED_USER_CARD = (problem, answer, category) => (dispatch, getState) => {
+export const ADD_CREATED_USER_CARD = (problem, answer, category, is_public) => (dispatch, getState) => {
   const username = getState().flashCodes.username;
   const userID = getState().flashCodes.userID;
+  console.log('actions - ADD_CREATED_USER_CARD', is_public);
   axios.post('/cards/create', {
       username: username,
       problem: problem,
       answer: answer,
       category: category,
-      userID: userID
+      userID: userID,
+      is_public: is_public
     })
     .then((info) => {
       if (info.status === 200) {
@@ -101,7 +103,6 @@ export const ADD_FLASH_CARD_LIST = () => (dispatch, getState) => {
   //in the future will also code to include a users ID to get their information as well
   const chosenTopics = getState().flashCodes.chosenTopics;
   const userID = getState().flashCodes.userID;
-  console.log('is something getting sent', chosenTopics)
   //query parameters.... or req.body
   axios.post('/cards/category/', {
       categories: chosenTopics,
@@ -113,6 +114,46 @@ export const ADD_FLASH_CARD_LIST = () => (dispatch, getState) => {
         const newArray = shuffle(info.data)
         dispatch({
           type: types.ADD_FLASH_CARD_LIST,
+          payload: newArray
+        });
+      }
+    })
+    .catch(console.error);
+};
+
+export const ADD_PUBLIC_FLASH_CARD_LIST = () => (dispatch, getState) => {
+  function shuffle(array) {
+    var currentIndex = array.length,
+      randomIndex;
+
+    // While there remain elements to shuffle...
+    while (currentIndex != 0) {
+
+      // Pick a remaining element...
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+
+      // And swap it with the current element.
+      [array[currentIndex], array[randomIndex]] = [
+        array[randomIndex], array[currentIndex]
+      ];
+    }
+
+    return array;
+  }
+  //in the future will also code to include a users ID to get their information as well
+  const chosenTopics = getState().flashCodes.chosenTopics;
+  const userID = getState().flashCodes.userID;
+  //query parameters.... or req.body
+  axios.post('/cards/publicCards/', {
+      categories: chosenTopics,
+      userID
+    })
+    .then((info) => {
+      if (info.status === 200) {
+        const newArray = shuffle(info.data)
+        dispatch({
+          type: types.ADD_PUBLIC_FLASH_CARD_LIST,
           payload: newArray
         });
       }

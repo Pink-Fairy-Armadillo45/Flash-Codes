@@ -39,7 +39,8 @@ const Topics = props => (
           else return props.deselectTopic(e.target.id);
         }} /> GOOGLE IT
         <div>
-          <input type='button' id='review' value='Begin Review' name='Begin Review' onClick={() => props.submit(props.userID)} />
+          <input type='button' id='review' value='Begin Reviewing Your Flashcodes' name='Begin Review' onClick={() => props.submit(props.userID)} />
+          <input type='button' id='review' value='Begin Reviewing All Flashcodes' name='Begin Review' onClick={() => props.submitPublic(props.userID)} />
         </div>
       </div>
     </div>
